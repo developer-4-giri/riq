@@ -10,8 +10,6 @@ var express = require('express'),
 	path = require('path'),
 	swig = require('swig'),
 	util = require('util'),
-	rest = require('./rest.js'),
-	oauth = require('./oauth.js'),
 	passport = require('passport'),
 	ForceDotComStrategy = require('passport-forcedotcom').Strategy;
 
@@ -20,7 +18,8 @@ var port = process.env.PORT || 3000;
 
 var CF_CLIENT_ID = '3MVG9A2kN3Bn17huFN0b_0IIMm64dpwfNyetlmBv0GQj0cmT49ZyKvvbmf07a16hY.e8TOIwoRR5aPr46eELb';
 var CF_CLIENT_SECRET = '5288898514549948088';
-var CF_CALLBACK_URL = 'http://localhost:' + port + '/auth/tiqconnect/callback';
+//var CF_CALLBACK_URL = 'http://localhost:' + port + '/auth/tiqconnect/callback';
+var CF_CALLBACK_URL = 'http://riq.herokuapp.com/auth/tiqconnect/callback';
 var SF_AUTHORIZE_URL = 'https://login.salesforce.com/services/oauth2/authorize';
 var SF_TOKEN_URL = 'https://login.salesforce.com/services/oauth2/token';
 
