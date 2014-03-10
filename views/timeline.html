@@ -127,7 +127,7 @@ var ADAPT_CONFIG = {
 								<li> 
 									<div class="grid_9 align_center" >
 										<div id="left_data_grid_{{ loop.index }}" class="grid_3 align_right_bottom" onMouseOver="showEventFullDetails(this.id,'{{ x.event_details}}')" onMouseOut="showEventSummaryDetails(this.id, '{{ x.event_date }}', ' {{ x.event_summary }}')"> 
-											<lable class="left-label"> {{x.event_date}} <br>  {{ x.event_summary}}  </lable>
+												<lable class="left-label"> {{x.event_date}} <br>  {{ x.event_summary}}  </lable>
 										</div>
 										<div class="grid_1 suffix_3" >
 											<canvas id="left_canvas_{{ loop.index }}"  class="left-timeline"> </canvas>
@@ -194,8 +194,8 @@ var ADAPT_CONFIG = {
 
 <script>
 	function Touchpoint(desc,number) {
-    	this.desc = desc;
-    	this.number = number;
+		this.desc = desc;
+		this.number = number;
   	};
 	
 	var touchpointStatsArray = new Array();
