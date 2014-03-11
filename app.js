@@ -139,6 +139,7 @@ app.get('/auth/tiqconnect', passport.authenticate('forcedotcom'), function(req, 
 app.get('/auth/tiqconnect/callback', passport.authenticate('forcedotcom', {
   failureRedirect: '/login'
 }), function(req, res) {
+	console.log('After successful login to SF : '+ util.inspect(res, { showHidden: false }).replace(/\n/g, " "))
   res.redirect('/');
 });
 
