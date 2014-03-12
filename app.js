@@ -14,12 +14,14 @@ var express = require('express'),
 	ForceDotComStrategy = require('passport-forcedotcom').Strategy;
 
 // all environments
-var port = process.env.PORT || 3000; 
+var port = process.env.PORT || 3001; 
 
-var CF_CLIENT_ID = '3MVG9A2kN3Bn17huFN0b_0IIMm64dpwfNyetlmBv0GQj0cmT49ZyKvvbmf07a16hY.e8TOIwoRR5aPr46eELb';
-var CF_CLIENT_SECRET = '5288898514549948088';
-//var CF_CALLBACK_URL = 'http://localhost:' + port + '/auth/tiqconnect/callback';
-var CF_CALLBACK_URL = 'http://riq.herokuapp.com/auth/tiqconnect/callback';
+var CF_CLIENT_ID = '3MVG9A2kN3Bn17huFN0b_0IIMm1QeLiR7ixYy5D60OdsqPcle0PF2HN.RByIabew5yDR4KdZ6SrTz_r9liqZG';
+var CF_CLIENT_SECRET = '8093287766885948229';
+var CF_CALLBACK_URL = 'http://localhost:' + port + '/auth/tiqconnect/callback';
+//var CF_CLIENT_ID = '3MVG9A2kN3Bn17huFN0b_0IIMm64dpwfNyetlmBv0GQj0cmT49ZyKvvbmf07a16hY.e8TOIwoRR5aPr46eELb';
+//var CF_CLIENT_SECRET = '5288898514549948088';
+//var CF_CALLBACK_URL = 'http://riq.herokuapp.com/auth/tiqconnect/callback';
 var SF_AUTHORIZE_URL = 'https://login.salesforce.com/services/oauth2/authorize';
 var SF_TOKEN_URL = 'https://login.salesforce.com/services/oauth2/token';
 
@@ -51,6 +53,9 @@ var sfStrategy = new ForceDotComStrategy({
 		tokenURL: SF_TOKEN_URL
 	}, 
 	function(accessToken, refreshToken, profile, done) {
+	  console.log('Access Token : '+accessToken);
+	  console.log('Access profile : '+profile);
+
 		// asynchronous verification, for effect...
 		process.nextTick(function() {
 		
@@ -88,9 +93,7 @@ app.use(express.methodOverride());
 app.use(express.cookieParser());
 app.use(express.cookieParser(CF_CLIENT_SECRET));
 
-app.use(express.session({
-    secret: 'keyboard cat'
-}));
+app.use(express.session({secret:CF_CLIENT_SECRET}));
 
 // Initialize Passport!  Also use passport.session() middleware, to support
 // persistent login sessions (recommended).
@@ -139,7 +142,7 @@ app.get('/auth/tiqconnect', passport.authenticate('forcedotcom'), function(req, 
 app.get('/auth/tiqconnect/callback', passport.authenticate('forcedotcom', {
   failureRedirect: '/login'
 }), function(req, res) {
-	console.log('After successful login to SF : '+ util.inspect(res, { showHidden: false }).replace(/\n/g, " "))
+	console.log('After successful login to SF : '+ util.inspect(req.query, { showHidden: false }) )
   res.redirect('/');
 });
 
