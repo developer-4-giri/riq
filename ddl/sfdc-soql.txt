@@ -1,0 +1,11 @@
+select AccountNumber, AccountSource, Active__c, AnnualRevenue, Description, Id, Name, OwnerId, Type, (select AccountId, Amount, CloseDate, CreatedDate, Description, Id, IsClosed, IsDeleted, IsWon, LeadSource, Name, OwnerId, Pricebook2Id, StageName, Type from Opportunities) from Account
+
+select AccountId, Id, IsDeleted, LeadSource, Name, OwnerId from Contact where Id = Account.Id
+
+select Description, Id, IsDeleted, OpportunityId, PricebookEntryId from OpportunityLineItem where PricebookEntryId = opportunity.price2bookId
+
+select  ConvertedAccountId, ConvertedDate, CreatedDate, Description, Id, Name, OwnerId from Lead where ConvertedAccountId = Account.Id
+
+select AccountId, ActivityDate, CallDisposition, CallDurationInSeconds, CallObject, CallType, CreatedById, CreatedDate, Description, Id, OwnerId, Status, Subject, WhatId, WhoId from Task where AccountId = Account.Id 
+
+select AccountId, ActivityDate, Description, Id, IsDeleted, OwnerId, ShowAs, Subject, WhatId, WhoId from Event where AccountId = Account.Id

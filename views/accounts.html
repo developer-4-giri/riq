@@ -9,6 +9,7 @@
 <meta name="description" content="RIQ Descriptino here " />
 <title>{{ page_title }}</title>
 <link rel="stylesheet" href="stylesheets/master.css" />
+
 <noscript>
 <link rel="stylesheet" href="stylesheets/mobile.min.css" />
 </noscript>
@@ -52,43 +53,48 @@ var ADAPT_CONFIG = {
 		</div>
 		
 		
-		<div id="content">
+		<div id="content" class="data">
 			
 			<br>
 			<br>
 			<br>
 			
 			<div class="container_12">
-				<div class="grid_12 grey_rounded_border align_center">
-						Accounts
+				<div class="grid_12  align_center">
+						<b> Accounts </b>
 				</div>
 			</div>				
 			
 			<div class="container_12">
-				<div class="grid_3 align_center"> 
-					<b> Account Id</b> 
-				</div>
-				<div class="grid_6 align_center">
-					<b> Account Name </b>
-				</div>
-				<div class="grid_3 align_center"> 
-					<b> Owner Id </b>
+				<div class="grid_12 align_center">
+					<table width="100%">
+						<tr width="100%">
+							<th width="33%">
+								<b> Account Id</b> 
+							</th>
+							<th width="33%">
+								<b> Account Name</b> 
+							</th>
+							<th>
+								<b> Owner Id</b> 
+							</th>
+						</tr>
+					{% for x in accounts %}
+						<tr>
+							<td>
+								<a href="/timeline?account_id={{ x._fields.id }}">{{ x._fields.id }}</a> 
+							</td>
+							<td>
+								{{ x._fields.name}} 
+							</td>
+							<td>
+								{{ x._fields.ownerid }} 
+							</td>
+						</tr>
+					{% endfor %}
+					</table>
 				</div>
 			</div>	
-			
-			<div class="container_12">
-				{% for x in accounts %}
-					<div class="grid_3 align_center"> 	
-						<a href="/timeline?account_id={{ x._fields.id }}">{{ x._fields.id }}</a> 
-					</div>
-					<div class="grid_6 align_center">
-						{{ x._fields.name}} 
-					</div>
-					<div class="grid_3 align_center"> 
-						{{ x._fields.ownerid }} 
-					</div>
-				{% endfor %}
-			</div>
 		
 		</div>
 		
@@ -127,30 +133,14 @@ var ADAPT_CONFIG = {
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script >
 	$( document ).ready( 
+		
 		function(){
 			var content_area_height =  $(document).height() - $("#header").height() - $("#footer").height() - 60 ;
 			var content_area_li_height =  content_area_height / 7;
 		}
 	);
 	
-	submitForm = function(){
 
-		var fd = new FormData();    
-		fd.append( 'userName', $("#userName").val());
-		fd.append( 'userPass', $("#userPass").val());
-		
-		$.ajax({
-		  url: '/login',
-		  data: fd,
-		  processData: false,
-		  contentType: false,
-		  type: 'POST',
-		  success: function(data){
-		    alert(data);
-		  }
-		});
-		
-	};
 </script>
 
 </html>
