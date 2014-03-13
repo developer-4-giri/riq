@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
 <meta name="author" content="ABCD" />
 <meta name="copyright" content="ABCD" />
-<meta name="description" content="RIQ Descriptino here " />
+<meta name="description" content="RIQ Description here " />
 <title>{{ page_title }}</title>
 <link rel="stylesheet" href="stylesheets/master.css" />
 <noscript>
@@ -211,7 +211,8 @@ var ADAPT_CONFIG = {
 	
 	$( document ).ready( 
 		function(){
-
+			console.log('On document ready called');
+			
 			drawChart(touchpointStatsArray, "touch-point-chart",  "total-touchpoint");
 			 
 			var width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
