@@ -9,3 +9,57 @@ select  ConvertedAccountId, ConvertedDate, CreatedDate, Description, Id, Name, O
 select AccountId, ActivityDate, CallDisposition, CallDurationInSeconds, CallObject, CallType, CreatedById, CreatedDate, Description, Id, OwnerId, Status, Subject, WhatId, WhoId from Task where AccountId = Account.Id 
 
 select AccountId, ActivityDate, Description, Id, IsDeleted, OwnerId, ShowAs, Subject, WhatId, WhoId from Event where AccountId = Account.Id
+
+
+					if(record._fields.opportunities != null){
+						for(var count = 0; count < record._fields.opportunities.records.length ; count++) {
+							console.log(' Opportunity Record:' + util.inspect(record._fields.opportunities.records[count], { showHidden: false }) );
+						}
+					}
+					//Find Account Details 
+					var account_details_sql = "select AccountNumber, AccountSource, Active__c, AnnualRevenue, Description, Id, Name, OwnerId, Type, (select AccountId, Amount, CloseDate, CreatedDate, Description, Id, IsClosed, IsDeleted, IsWon, LeadSource, Name, OwnerId, Pricebook2Id, StageName, Type from Opportunities) from Account where Id='"++"'";
+					org.query({ query:account_details_sql, oauth: req.session.oauth  }, function(err, resp){
+						if(!err && resp.records) {
+							//Read the name here
+						}
+					});
+					
+					//Find products sold 
+					var product_name_sql = "select Description, Family, Id, IsActive, Name, ProductCode from Product2 where id in ( Select product2id from productbookentry where id in (select pricebookentryid from opportunitylineitem where id in (select opportunityid from opportunity where accountid = '"+ +"' )) and IsActive=true";
+					//Opportunity details - to find products sold
+					var opportunity_details_sql = "select AccountId, Amount, CloseDate, CreatedDate, Description, Id, IsClosed, IsDeleted, IsWon, LeadSource, Name, OwnerId, Pricebook2Id, StageName, Type from Opportunity where AccountId='"++"'";
+					org.query({ query:opportunity_details_sql, oauth: req.session.oauth  }, function(err, resp){
+						if(!err && resp.records) {
+							//Read the name here
+						}
+					});
+
+					//Find OwnerName
+					var owner_name_sql = "Select Id, name form User where id='"+ record._fields.ownerId +"'";
+					org.query({ query:owner_name_sql, oauth: req.session.oauth  }, function(err, resp){
+						if(!err && resp.records) {
+							//Read the name here
+						}
+					});
+					
+					//Lead Deatils for converted date and created date
+					var lead_detail_sql="select  ConvertedAccountId, ConvertedDate, CreatedDate, Description, Id, Name, OwnerId from Lead where ConvertedAccountId = '"++"'";
+					org.query({ query:lead_detail_sql, oauth: req.session.oauth  }, function(err, resp){
+						if(!err && resp.records) {
+							//Read the name here
+						}
+					});
+
+					var task_detail_sql = "select AccountId, ActivityDate, CallDisposition, CallDurationInSeconds, CallObject, CallType, CreatedById, CreatedDate, Description, Id, OwnerId, Status, Subject, WhatId, WhoId from Task where AccountId = '"++"'";
+					org.query({ query:task_detail_sql, oauth: req.session.oauth  }, function(err, resp){
+						if(!err && resp.records) {
+							//Read the name here
+						}
+					});
+					
+					var event_details_sql = "select AccountId, ActivityDate, Description, Id, IsDeleted, OwnerId, ShowAs, Subject, WhatId, WhoId from Event where AccountId = '"++"'";
+					org.query({ query:event_details_sql, oauth: req.session.oauth  }, function(err, resp){
+						if(!err && resp.records) {
+							//Read the name here
+						}
+					});

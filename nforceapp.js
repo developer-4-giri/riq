@@ -59,15 +59,15 @@ app.configure('development', function(){
 app.configure('production', function(){
   app.use(express.errorHandler());
 });
-	
-app.get('/', function(req, res) {
-	console.log('Redirecting to SF login :'+ org.getAuthUri());
-	res.redirect(org.getAuthUri());
-});
 
 app.get('/auth/tiqconnect/callback', function(req, res) {
 	console.log('After SF login success:');
 	res.redirect('/account');
+});
+
+app.get('/sf-login', function(req, res) {
+	console.log('Redirecting to SF login :'+ org.getAuthUri());
+	res.redirect(org.getAuthUri());
 });
 
 app.get('/logout', function(req, res) { 
@@ -77,12 +77,18 @@ app.get('/logout', function(req, res) {
 });
 		
 app.get('/login', routes.index);
+app.get('/', routes.index);
 	
-app.get('/timeline', timline.drawtimeline);
-
-
-//express route
 app.get('/account', account.getaccounts(org));
+app.get('/accounttimeline', account.getaccountdetails(org));
+
+app.get('/gettotalrevenueofall', account.gettotalrevenueofall(org));
+app.get('/getannualrevenuepercent', account.getannualrevenuepercent(org));
+app.get('/getproductsbought', account.getproductsbought(org));
+app.get('/getacquiredthrough', account.getacquiredthrough(org));
+
+app.get('/timeline', timline.drawtimeline);
+app.get('/strem-account', account.streamaccounts(org));
 
 app.listen(port, function(){
 	  console.log("Express server listening on port %d in %s mode", port, app.settings.env);
