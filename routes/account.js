@@ -8,7 +8,7 @@ swig.setFilter('isObject', function(element) {
 
 exports.getaccountdetails= function(org){
 	return function(req, res){
-		var query = "SELECT Id, Name, AccountSource, AnnualRevenue, AccountNumber, Type, Owner.Name, ( SELECT ActivityDate, ActivityType, Description, CreatedBy.Name, Status, WhatId FROM ActivityHistories order by ActivityDate desc), (select AccountId, Amount, CloseDate, CreatedDate, Description, Id, IsClosed, IsDeleted, IsWon, LeadSource, Name, OwnerId, Pricebook2Id, StageName, Type from Opportunities order by CreatedDate desc) FROM Account where Id = '"+ req.query.accountid +"'";
+		var query = "SELECT Id, Name, AccountSource, AnnualRevenue, AccountNumber, Type, Owner.Name, ( select AccountId, ActivityDate, ActivityType, CallType, Description, EndDateTime, Id, IsTask, OwnerId, StartDateTime, Subject, WhatId, WhoId from ActivityHistories where IsClosed=true and IsDeleted = false order by ActivityDate desc), (select AccountId, Amount, CloseDate, CreatedDate, Description, Id, IsClosed, IsDeleted, IsWon, LeadSource, Name, OwnerId, Pricebook2Id, StageName, Type from Opportunities order by CreatedDate desc) FROM Account where Id = '"+ req.query.accountid +"'";
 		org.query({ query:query, oauth: req.session.oauth}, function(err, resp){
 			if(!err && resp.records) {
 				console.log("AccountDetails Query  Result :" + util.inspect(resp.records, { showHidden: false }));
