@@ -100,6 +100,26 @@ background-color: #EFEFEF;
 border-color: #CCCCCC;
 }
 
+div.lightslategray
+{
+background-color: lightslategray;
+}
+
+div.slategray
+{
+background-color: slategray;
+}
+
+div.gray
+{
+background-color: gray;
+}
+
+div.dimgray
+{
+background-color: dimgray;
+}
+
 /* `Data Table
 ----------------------------------------------------------------------------------------------------*/
 
