@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<meta name="author" content="ABCD" />
+<meta name="copyright" content="ABCD" />
+<meta name="description" content="RIQ Descriptino here " />
+<title>{{ page_title }}</title>
+<link rel="stylesheet" href="stylesheets/master.css" />
+
+<noscript>
+<link rel="stylesheet" href="stylesheets/mobile.min.css" />
+</noscript>
+<script>
+// Edit to suit your needs.
+var ADAPT_CONFIG = {
+  // Where is your CSS?
+  path: 'stylesheets/',
+
+  // false = Only run once, when page first loads.
+  // true = Change on window resize and page tilt.
+  dynamic: true,
+
+  // First range entry is the minimum.
+  // Last range entry is the maximum.
+  // Separate ranges by "to" keyword.
+  range: [
+    '0px    to 760px  = mobile.min.css',
+    '760px  to 980px  = 720.min.css',
+    '980px  to 1280px = 960.min.css',
+    '1280px to 1600px = 1200.min.css',
+    '1600px to 1940px = 1560.min.css',
+    '1940px to 2540px = 1920.min.css',
+    '2540px           = 2520.min.css'
+  ]
+};
+</script>
+<script src="javascripts/adapt.min.js"></script>
+</head>
+
+<body>
+
+	<div id="wrapper">
+	
+		<div id="header">
+			<div class="container_12">
+				<div class="grid_12 grey_rounded_border">
+					<h1> &nbsp; </h1>
+				</div>				
+			</div>
+		</div>
+		
+		
+		<div id="content" class="data">
+			
+			<br>
+			<br>
+			<br>
+			
+			<div class="container_12">
+				<div class="grid_12  align_center">
+						<b> Accounts </b>
+				</div>
+			</div>				
+			
+			<div class="container_12">
+				<div class="grid_12 align_center">
+					<table width="90%">
+						<tr width="100%">
+							<th >
+								<b> Account Name</b> 
+							</th>
+							<th>
+								<b> Account Type</b> 
+							</th>
+						</tr>
+					{% for x in accounts %}
+						<tr>
+							<td>
+								<a href="/accounttimeline?accountid={{ x._fields.id }}">	{{ x._fields.name}} </a> 
+							</td>
+							<td>
+								{% if x._fields.type %} 
+									{{ x._fields.type}}								
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+					</table>
+				</div>
+			</div>	
+		
+		</div>
+		
+		<div id="footer">
+
+			<div class="container_12">
+				<div class="container_12 grey_rounded_border ">
+					<div class="grid_3">
+						<p>
+							<small>
+								Licensed Details with link
+							</small>
+						</p>
+					</div>
+					<div class="grid_6 align_center">
+						<p>
+							<small>
+								Company Details - With Link
+							</small>
+						</p>
+					</div>
+					<div class="grid_3 align_right">
+						<p>
+							<small>
+								Contact Details and HowTo here
+							</small>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+</body>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script >
+	$( document ).ready( 
+		
+		function(){
+			var content_area_height =  $(document).height() - $("#header").height() - $("#footer").height() - 60 ;
+			var content_area_li_height =  content_area_height / 7;
+		}
+	);
+	
+
+</script>
+
+</html>
