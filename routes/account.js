@@ -1,5 +1,6 @@
 var swig = require('swig'),
-	util = require('util');
+	util = require('util'),
+	accounting = require('accounting');
 
 swig.setFilter('isObject', function(element) {
 	  return typeof element == "string";
@@ -47,7 +48,7 @@ exports.getannualrevenuepercent = function(org){
 					org.query({ query:query, oauth: req.session.oauth}, function(err, resp){
 						if(!err && resp.records) {
 							var totalRevenue = resp.records[0]._fields.expr0 ;
-							res.send(200,""+((annualRevenue*100)/totalRevenue)+"%");
+							res.send(200,""+accounting.toFixed( ((annualRevenue*100)/totalRevenue), 2)+"%");
 						}
 					});
 				}
