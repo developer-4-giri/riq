@@ -43,7 +43,7 @@ exports.getintroducedondate = function(org){
 				if(resp.records.length > 0)
 					res.send(200, resp.records[0]._fields.createddate.substr(0,10));
 				else
-					res.send(200, "No Data Available");
+					res.send(200, "Data Not Available");
 			}
 		});
 	}
@@ -58,7 +58,7 @@ exports.getclientsincedate = function(org){
 				if(resp.records.length > 0)
 					res.send(200, resp.records[0]._fields.converteddate.substr(0,10));
 				else
-					res.send(200, "No Data Available");
+					res.send(200, "Data Not Available");
 			}
 		});
 	}
@@ -92,7 +92,7 @@ exports.getimetoacquire = function(org){
 						}
 					});
 				}else
-					res.send(200, "No Data Available");
+					res.send(200, "Data Not Available");
 			}
 		});
 	}
@@ -193,7 +193,7 @@ exports.getacquiredthrough = function(org){
 					res.send(200,""+resp.records[0]._fields.name);
 				}
 				else{
-					res.send(200,"No Details");
+					res.send(200,"Data Not Available");
 				}
 			}
 		});  
