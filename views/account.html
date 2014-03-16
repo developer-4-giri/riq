@@ -9,10 +9,7 @@
 <meta name="description" content="RIQ Descriptino here " />
 <title>{{ page_title }}</title>
 <link rel="stylesheet" href="stylesheets/master.css" />
-
-<noscript>
 <link rel="stylesheet" href="stylesheets/mobile.min.css" />
-</noscript>
 <script>
 // Edit to suit your needs.
 var ADAPT_CONFIG = {
@@ -38,6 +35,7 @@ var ADAPT_CONFIG = {
 };
 </script>
 <script src="javascripts/adapt.min.js"></script>
+<script src="javascripts/jquery-1.11.0.min.js"></script>
 </head>
 
 <body>
@@ -126,17 +124,4 @@ var ADAPT_CONFIG = {
 	</div>
 
 </body>
-<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-<script >
-	$( document ).ready( 
-		
-		function(){
-			var content_area_height =  $(document).height() - $("#header").height() - $("#footer").height() - 60 ;
-			var content_area_li_height =  content_area_height / 7;
-		}
-	);
-	
-
-</script>
-
 </html>

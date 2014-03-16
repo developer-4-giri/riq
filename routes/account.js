@@ -17,7 +17,7 @@ exports.getaccountdetails= function(org){
 				console.log("AccountDetails Query  Result :" + util.inspect(resp.records, { showHidden: false }));
 
 				console.log(util.inspect(resp.records[0]._fields.owner, { showHidden: false }));
-				res.render("account-timeline.html", { page_title: 'Client Timeline - ', accountdetails: resp.records[0]});
+				res.render("account-timeline.html", { page_title: 'Client Timeline - '+resp.records[0]._fields.name, accountdetails: resp.records[0]});
 			}
 		});
 	}
