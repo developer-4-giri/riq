@@ -27,7 +27,7 @@ exports.getaccountactivity = function(org){
 	return function(req,res){
 		var query = "SELECT Id, (select AccountId, ActivityDate, ActivityType, CallType, Description, EndDateTime, Id, IsTask, OwnerId, StartDateTime, Subject, WhatId, WhoId from ActivityHistories where IsClosed=true and IsDeleted = false order by ActivityDate desc) FROM Account where Id = '"+ req.query.accountid.trim() +"'";
 		org.query({ query:query, oauth: req.session.oauth}, function(err, resp){
-			if(!err && resp.records) {
+			if(!err && resp.records && resp.records.length > 0 ) {
 				res.send(200,""+resp.records[0]);
 			}
 		});
