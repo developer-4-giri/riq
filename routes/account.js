@@ -40,7 +40,10 @@ exports.getintroducedondate = function(org){
 		org.query({ query:query, oauth: req.session.oauth}, function(err, resp){
 			if(!err && resp.records) {
 				console.log("AccountDates Query  Result :" + util.inspect(resp.records[0], { showHidden: false }));
-				res.send(200, resp.records[0]._fields.createddate.substr(0,10));
+				if(resp.records.length > 0)
+					res.send(200, resp.records[0]._fields.createddate.substr(0,10));
+				else
+					res.send(200, "No Data Available");
 			}
 		});
 	}
@@ -52,7 +55,10 @@ exports.getclientsincedate = function(org){
 		org.query({ query:query, oauth: req.session.oauth}, function(err, resp){
 			if(!err && resp.records) {
 				console.log("AccountDates Query  Result :" + util.inspect(resp.records[0], { showHidden: false }));
-				res.send(200, resp.records[0]._fields.converteddate.substr(0,10));
+				if(resp.records.length > 0)
+					res.send(200, resp.records[0]._fields.converteddate.substr(0,10));
+				else
+					res.send(200, "No Data Available");
 			}
 		});
 	}
@@ -64,26 +70,29 @@ exports.getimetoacquire = function(org){
 		org.query({ query:query, oauth: req.session.oauth}, function(err, resp){
 			if(!err && resp.records) {
 				console.log("TimeToacquire Query-1  Result :" + util.inspect(resp.records[0], { showHidden: false }));
-				var introducedondate = resp.records[0]._fields.createddate.substr(0,10);
-				
-				var subquery = "select CloseDate from Opportunity where  IsWon = true and IsClosed = true and IsDeleted = false and AccountId='"+ req.query.accountid.trim() +"' order by CloseDate";
-				org.query({ query:subquery, oauth: req.session.oauth}, function(err, resp){
-					if(!err && resp.records) {
-						console.log("TimeToacquire Query-2  Result :" + util.inspect(resp.records[0], { showHidden: false }));
-						if(resp.records.length >0 ){
-							var oppclosedate = resp.records[0]._fields.closedate.substr(0,10);
+				if(resp.records.length > 0){
+					var introducedondate = resp.records[0]._fields.createddate.substr(0,10);
+					
+					var subquery = "select CloseDate from Opportunity where  IsWon = true and IsClosed = true and IsDeleted = false and AccountId='"+ req.query.accountid.trim() +"' order by CloseDate";
+					org.query({ query:subquery, oauth: req.session.oauth}, function(err, resp){
+						if(!err && resp.records) {
+							console.log("TimeToacquire Query-2  Result :" + util.inspect(resp.records[0], { showHidden: false }));
+							if(resp.records.length >0 ){
+								var oppclosedate = resp.records[0]._fields.closedate.substr(0,10);
 
-							var startDate = moment(introducedondate, 'YYYY-M-DD')
-							var endDate = moment(oppclosedate, 'YYYY-M-DD')
+								var startDate = moment(introducedondate, 'YYYY-M-DD')
+								var endDate = moment(oppclosedate, 'YYYY-M-DD')
+								
+								var daysDiff = endDate.diff(startDate, 'days')
+
+								res.send(200, daysDiff+" days" );
+							}else
+								res.send(200, "Data Not Avaiable" );
 							
-							var daysDiff = endDate.diff(startDate, 'days')
-
-							res.send(200, daysDiff+" days" );
-						}else
-							res.send(200, "Data Not Avaiable" );
-						
-					}
-				});
+						}
+					});
+				}else
+					res.send(200, "No Data Available");
 			}
 		});
 	}
