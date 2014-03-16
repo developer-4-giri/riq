@@ -9,7 +9,7 @@ swig.setFilter('isObject', function(element) {
 
 exports.getaccountdetails= function(org){
 	return function(req, res){
-		var query = "SELECT Id, Name, AccountSource, AnnualRevenue, AccountNumber, Type, Owner.Name FROM Account where Id = '"+ req.query.accountid +"'";
+		var query = "SELECT Id, Name, AccountSource, AnnualRevenue, AccountNumber, Type, Owner.Name, (select AccountId, ActivityDate, ActivityType, CallType, Description, EndDateTime, Id, IsTask, OwnerId, Subject, WhatId, WhoId from ActivityHistories where IsClosed=true and IsDeleted = false order by ActivityDate desc) FROM Account where Id = '"+ req.query.accountid +"'";
 		console.log("AccountDetails Query   :" + query);
 
 		org.query({ query:query, oauth: req.session.oauth}, function(err, resp){

@@ -121,6 +121,7 @@ var ADAPT_CONFIG = {
 				</div>
 				
 				<div id="event-content" class="grid_9" style="overflow-y:scroll; overflow-x: hidden">
+				{% if accountdetails._fields.activityhistories && accountdetails._fields.activityhistories.records %}
 					<ul>
 						<li> 
 							<div class="grid_9 align_center" > 
@@ -136,33 +137,34 @@ var ADAPT_CONFIG = {
 								</div>
 							</div>
 						</li>						
-						{% for x in client_summary.event_stats  %}
-							{% if loop.index % 2 == 0 %}
-								<li> 
-									<div class="grid_9 align_center" >
-										<div id="left_data_grid_{{ loop.index }}" class="grid_3 align_right_bottom" onMouseOver="showEventFullDetails(this.id,'{{ x.event_details}}')" onMouseOut="showEventSummaryDetails(this.id, '{{ x.event_date }}', ' {{ x.event_summary }}')"> 
-												<lable class="left-label"> {{x.event_date}} <br>  {{ x.event_summary}}  </lable>
+							{% for x in accountdetails._fields.activityhistories.records %}
+								{% if loop.index % 2 == 0 %}
+									<li> 
+										<div class="grid_9 align_center" >
+											<div id="left_data_grid_{{ loop.index }}" class="grid_3 align_right_bottom" onMouseOver="showEventFullDetails(this.id,'{{ x.Description}}')" onMouseOut="showEventSummaryDetails(this.id, '{{ x.event_date }}', ' {{ x.event_summary }}')"> 
+													<lable class="left-label"> {{x.ActivityDate}} <br>  {{ x.Subject}}  </lable>
+											</div>
+											<div class="grid_1 suffix_3" >
+												<canvas id="left_canvas_{{ loop.index }}"  class="left-timeline"> </canvas>
+											</div> 
 										</div>
-										<div class="grid_1 suffix_3" >
-											<canvas id="left_canvas_{{ loop.index }}"  class="left-timeline"> </canvas>
-										</div> 
-									</div>
-								</li>
-							{% endif %}
-							{% if loop.index % 2 != 0 %}
-								<li> 
-									<div class="grid_9 align_center" >
-										<div class="grid_1 prefix_3 suffix_1" >
-											<canvas id="right_canvas_{{ loop.index }}" class="right-timeline"> </canvas>
-										</div> 
-										<div id="right_data_grid_{{ loop.index }}" class="grid_3 align_left_bottom" onMouseOver="showEventFullDetails(this.id,'{{ x.event_details}}')" onMouseOut="showEventSummaryDetails(this.id, '{{ x.event_date }}', ' {{ x.event_summary }}')"> 
-											<lable class="right-label"> {{x.event_date}} <br>  {{ x.event_summary}}  </lable>
+									</li>
+								{% endif %}
+								{% if loop.index % 2 != 0 %}
+									<li> 
+										<div class="grid_9 align_center" >
+											<div class="grid_1 prefix_3 suffix_1" >
+												<canvas id="right_canvas_{{ loop.index }}" class="right-timeline"> </canvas>
+											</div> 
+											<div id="right_data_grid_{{ loop.index }}" class="grid_3 align_left_bottom" onMouseOver="showEventFullDetails(this.id,'{{ x.Description}}')" onMouseOut="showEventSummaryDetails(this.id, '{{ x.event_date }}', ' {{ x.event_summary }}')"> 
+												<lable class="right-label"> {{x.ActivityDate}} <br>  {{ x.Subject}}  </lable>
+											</div>
 										</div>
-									</div>
-								</li>
-							{% endif %}
-						{% endfor %}
+									</li>
+								{% endif %}
+							{% endfor %}
 					</ul>
+				{% endif %}
 				</div>
 				<div class="grid_3">
 					<lable id="event-details-section"> &nbsp; </lable>
