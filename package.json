@@ -17,6 +17,7 @@
     "passport": ">= 0.0.0",
     "passport-forcedotcom": ">=0.0.0",
     "nforce": "~0.7.0-beta.1",
-    "accounting": "~0.3.2"
+    "accounting": "~0.3.2",
+    "moment": "~2.5.1"
   }
 }
