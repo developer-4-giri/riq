@@ -25,18 +25,21 @@ exports.getaccountdetails= function(org){
 
 exports.getaccountactivity = function(org){
 	return function(req,res){
-		var query = "SELECT Id, (select AccountId, ActivityDate, ActivityType, CallType, Description, EndDateTime, Id, IsTask, OwnerId, StartDateTime, Subject, WhatId, WhoId from ActivityHistories where IsClosed=true and IsDeleted = false order by ActivityDate desc) FROM Account where Id = '"+ req.query.accountid.trim() +"'";
+		var query = "SELECT Id, (select AccountId, ActivityDate, ActivityType, CallType, Description, EndDateTime, Id, IsTask, OwnerId, Subject, WhatId, WhoId from ActivityHistories where IsClosed=true and IsDeleted = false order by ActivityDate desc) FROM Account where Id = '"+ req.query.accountid +"'";
+		console.log("AccountActivity Query   :" + query);
 		org.query({ query:query, oauth: req.session.oauth}, function(err, resp){
-			if(!err && resp.records && resp.records.length > 0 ) {
-				res.send(200,""+resp.records[0]);
-			}
+			if(!err && resp.records &&  resp.records.length > 0 && resp.records[0]._fields.activityhistories) {
+				console.log("AccountActivity Query  Result :" + util.inspect(resp.records[0]._fields.activityhistories.records, { showHidden: false }));
+				res.send(200, resp.records[0]._fields.activityhistories.records);
+			}else
+				res.send(200, "No Activity Data Found");
 		});
 	}
 };
 
 exports.getintroducedondate = function(org){
 	return function(req,res){
-		var query = "select ConvertedAccountId, ConvertedDate, CreatedDate, Description, Id, Name from Lead where ConvertedAccountId ='"+ req.query.accountid.trim() +"'";
+		var query = "select ConvertedAccountId, ConvertedDate, CreatedDate, Description, Id, Name from Lead where ConvertedAccountId ='"+ req.query.accountid +"'";
 		org.query({ query:query, oauth: req.session.oauth}, function(err, resp){
 			if(!err && resp.records) {
 				console.log("AccountDates Query  Result :" + util.inspect(resp.records[0], { showHidden: false }));
@@ -51,7 +54,7 @@ exports.getintroducedondate = function(org){
  
 exports.getclientsincedate = function(org){
 	return function(req,res){
-		var query = "select ConvertedAccountId, ConvertedDate, CreatedDate, Description, Id, Name from Lead where ConvertedAccountId ='"+ req.query.accountid.trim() +"'";
+		var query = "select ConvertedAccountId, ConvertedDate, CreatedDate, Description, Id, Name from Lead where ConvertedAccountId ='"+ req.query.accountid +"'";
 		org.query({ query:query, oauth: req.session.oauth}, function(err, resp){
 			if(!err && resp.records) {
 				console.log("AccountDates Query  Result :" + util.inspect(resp.records[0], { showHidden: false }));
@@ -66,14 +69,14 @@ exports.getclientsincedate = function(org){
 
 exports.getimetoacquire = function(org){
 	return function(req,res){
-		var query = "select CreatedDate from Lead where ConvertedAccountId ='"+ req.query.accountid.trim() +"'";
+		var query = "select CreatedDate from Lead where ConvertedAccountId ='"+ req.query.accountid +"'";
 		org.query({ query:query, oauth: req.session.oauth}, function(err, resp){
 			if(!err && resp.records) {
 				console.log("TimeToacquire Query-1  Result :" + util.inspect(resp.records[0], { showHidden: false }));
 				if(resp.records.length > 0){
 					var introducedondate = resp.records[0]._fields.createddate.substr(0,10);
 					
-					var subquery = "select CloseDate from Opportunity where  IsWon = true and IsClosed = true and IsDeleted = false and AccountId='"+ req.query.accountid.trim() +"' order by CloseDate";
+					var subquery = "select CloseDate from Opportunity where  IsWon = true and IsClosed = true and IsDeleted = false and AccountId='"+ req.query.accountid +"' order by CloseDate";
 					org.query({ query:subquery, oauth: req.session.oauth}, function(err, resp){
 						if(!err && resp.records) {
 							console.log("TimeToacquire Query-2  Result :" + util.inspect(resp.records[0], { showHidden: false }));
@@ -100,7 +103,7 @@ exports.getimetoacquire = function(org){
 
 exports.getlifetimevalue = function(org){
 	return function(req,res){
-		var query = "select Amount, CloseDate, StageName from Opportunity where  IsWon = true and IsClosed = true and IsDeleted = false and AccountId='"+ req.query.accountid.trim() +"' order by CloseDate";
+		var query = "select Amount, CloseDate, StageName from Opportunity where  IsWon = true and IsClosed = true and IsDeleted = false and AccountId='"+ req.query.accountid +"' order by CloseDate";
 		org.query({ query:query, oauth: req.session.oauth}, function(err, resp){
 			if(!err && resp.records) {
 				var clv=0;
@@ -130,7 +133,7 @@ exports.gettotalrevenueofall = function(org){
 
 exports.getannualrevenuepercent = function(org){
 	return function(req,res){
-		var query = "Select Id, AnnualRevenue from Account where id = '"+req.query.accountid.trim() +"'";
+		var query = "Select Id, AnnualRevenue from Account where id = '"+req.query.accountid +"'";
 		console.log("Account Annual Revenue Query :" + query);
 		org.query({ query:query, oauth: req.session.oauth}, function(err, resp){
 			if(!err && resp.records) {
@@ -159,7 +162,7 @@ exports.getannualrevenuepercent = function(org){
 
 exports.getproductsbought = function(org){
 	return function(req,res){
-		var query = "Select Id, Account.AccountNumber, Account.Name, (Select PricebookEntry.Product2.Name From OpportunityLineItems), Amount  From Opportunity where Account.Id = '" + req.query.accountid.trim() + "' and IsClosed=true and IsWon= true and IsDeleted=false";
+		var query = "Select Id, Account.AccountNumber, Account.Name, (Select PricebookEntry.Product2.Name From OpportunityLineItems), Amount  From Opportunity where Account.Id = '" + req.query.accountid + "' and IsClosed=true and IsWon= true and IsDeleted=false";
 		console.log("Products Bought Query :" + query);
 		org.query({query: query, oauth: req.session.oauth }, function(err, resp){
 			if(!err && resp.records) {
@@ -184,7 +187,7 @@ exports.getproductsbought = function(org){
 
 exports.getacquiredthrough = function(org){
 	return function(req,res){
-		var query = "SELECT Id, Name, convertedAccountId from Lead  where convertedAccountId = '" + req.query.accountid.trim() + "'";
+		var query = "SELECT Id, Name, convertedAccountId from Lead  where convertedAccountId = '" + req.query.accountid + "'";
 		console.log("Acquired Through Query :" + query);
 		org.query({query: query, oauth: req.session.oauth }, function(err, resp){
 			if(!err && resp.records) {

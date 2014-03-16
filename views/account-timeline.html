@@ -105,7 +105,7 @@ var ADAPT_CONFIG = {
 					</div>
 				</div>
 				<div class="grid_4">
-					<lable id="total-touchpoint-lable" > Total Number of Touchpoint(Meaningful): </lable> <lable id="total-touchpoint" >[ TOUCH-POINT-NUMBER HERE ] </lable> 
+					<lable id="total-touchpoint-lable" > Total Number of Touchpoint(Meaningful): </lable> <lable id="total-touchpoint" > </lable> 
 					<div class="grid_4" id="touch-point-chart"></div>
 				</div>
 				
@@ -118,6 +118,7 @@ var ADAPT_CONFIG = {
 		<div id="content">
 			<div class="container_12">
 				<div class="grid_12">
+					<lable id="activity-data-lable" class=".data-load-controls" service_url="getaccountactivity"></lable>
 				</div>
 				
 				<div id="event-content" class="grid_9" style="overflow-y:scroll; overflow-x: hidden">
@@ -207,13 +208,15 @@ var ADAPT_CONFIG = {
 
 <script >
 	var color_counter = 0;
+	function Touchpoint(desc,number) {
+		this.desc = desc;
+		this.number = number;
+  	};
 	
 	$( document ).ready( 
 		function(){
 			console.log('On document ready called');
 			
-			//drawChart(touchpointStatsArray, "touch-point-chart",  "total-touchpoint");
-			 
 			var width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
 			var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
 			
@@ -248,7 +251,7 @@ var ADAPT_CONFIG = {
 
     $('.data-load-controls').each(function() {
     	
-    	var account_id = $('#client-id').text();
+    	var account_id = $('#client-id').text().trim();
     	var service_url = $(this).attr('service_url');
     	var caller_id = $(this).attr('id');
 		
@@ -256,12 +259,49 @@ var ADAPT_CONFIG = {
 		  url: "/"+service_url,
 		  data: {"accountid": account_id},
 		  success:function(data){  
+		  	console.log(service_url+" : "+data);
 		  	$("#"+caller_id).text(data); 
 		  }
 		});
 
     });
 
+	$('#event-content').each(function() {
+    	
+    	var account_id = $('#client-id').text().trim();
+    	var service_url = "/getaccountactivity";
+		
+		alert("Calling account acityvy");
+		$.ajax({
+		  url: service_url,
+		  data: {"accountid": account_id},
+		  success:function(data){  
+			analyzeAccountActivityAndDrawChart(data);
+		  }
+		});
+
+    });
+
+	analyzeAccountActivityAndDrawChart = function(data){
+		var activity_map = {};
+
+		for(var i=0; i< data.length; i++){
+			type = data[i].Subject;
+			if(activity_map[type])
+				activity_map[type] += 1;
+			else
+				activity_map[type] = 1;
+		}
+		
+		var touchpointStatsArray = new Array();
+		var count=0;
+		for(key in activity_map){
+			touchpointStatsArray[ count++ ] = new Touchpoint( key ,  activity_map[key]);
+		}
+		
+		if(count > 0)
+			drawChart(touchpointStatsArray, "touch-point-chart",  "total-touchpoint");
+	};
 </script>
 
 </html>
