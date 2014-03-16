@@ -86,6 +86,11 @@ app.get('/gettotalrevenueofall', account.gettotalrevenueofall(org));
 app.get('/getannualrevenuepercent', account.getannualrevenuepercent(org));
 app.get('/getproductsbought', account.getproductsbought(org));
 app.get('/getacquiredthrough', account.getacquiredthrough(org));
+app.get('/getaccountactivity', account.getaccountactivity(org));
+app.get('/getintroducedondate', account.getintroducedondate(org));
+app.get('/getclientsincedate', account.getclientsincedate(org));
+app.get('/getlifetimevalue', account.getlifetimevalue(org));
+app.get('/getimetoacquire', account.getimetoacquire(org));
 
 app.get('/timeline', timline.drawtimeline);
 app.get('/strem-account', account.streamaccounts(org));

@@ -83,9 +83,9 @@ var ADAPT_CONFIG = {
 							<lable id="det-sec1-1-lable" > Product/Services Bought : </lable> <lable id="prod-ser-bought" class="data-load-controls" service_url="getproductsbought"> </lable>
 						</p>
 						<p>
-							<lable id="det-sec1-2-lable" > Client Since : </lable> <lable id="client-since" > {{ client_summary.client_details.client_since }} </lable> <br> 
-							<lable id="det-sec1-3-lable" > Introduced On : </lable> <lable id="introduced-on" > {{ client_summary.client_details.introduced_on }} </lable> <br> 
-							<lable id="det-sec1-4-lable" > Time to Acquire : </lable> <lable id="time-to-acquire" > {{ client_summary.acquisition.time_to_acquire }} </lable> <br> 
+							<lable id="det-sec1-2-lable" > Client Since : </lable> <lable id="client-since" class="data-load-controls" service_url="getclientsincedate"> </lable> <br> 
+							<lable id="det-sec1-3-lable" > Introduced On : </lable> <lable id="introduced-on" class="data-load-controls" service_url="getintroducedondate"> </lable> <br> 
+							<lable id="det-sec1-4-lable" > Time to Acquire : </lable> <lable id="time-to-acquire" class="data-load-controls" service_url="getimetoacquire" > </lable> <br> 
 							<lable id="det-sec1-5-lable" > Acquired Through : </lable> <lable id="acquired-through" class="data-load-controls" service_url="getacquiredthrough"> </lable> <br> 
 						</p>
 					</div>
@@ -99,7 +99,7 @@ var ADAPT_CONFIG = {
 							</lable>
 						</p>
 						<p>
-							<lable id="det-sec2-2-lable" > Customer Lifetime Value (CLV) : </lable> <lable id="cust-life-value" class="" service_url="getannualrevenuepercent"> </lable> <br> 
+							<lable id="det-sec2-2-lable" > Customer Lifetime Value (CLV) : </lable> <lable id="cust-life-value" class="data-load-controls" service_url="getlifetimevalue"> </lable> <br> 
 							<lable id="det-sec2-3-lable" > % Revenue Contribution : </lable> <lable id="revenue-contr" class="data-load-controls" service_url="getannualrevenuepercent"> </lable>  <br> 
 						</p>
 					</div>
@@ -255,7 +255,9 @@ var ADAPT_CONFIG = {
 		$.ajax({
 		  url: "/"+service_url,
 		  data: {"accountid": account_id},
-		  success:function(data){  $("#"+caller_id).text(data); }
+		  success:function(data){  
+		  	$("#"+caller_id).text(data); 
+		  }
 		});
 
     });

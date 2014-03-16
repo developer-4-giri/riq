@@ -1,6 +1,7 @@
 var swig = require('swig'),
 	util = require('util'),
-	accounting = require('accounting');
+	accounting = require('accounting'),
+	moment = require('moment');
 
 swig.setFilter('isObject', function(element) {
 	  return typeof element == "string";
@@ -8,7 +9,7 @@ swig.setFilter('isObject', function(element) {
 
 exports.getaccountdetails= function(org){
 	return function(req, res){
-		var query = "SELECT Id, Name, AccountSource, AnnualRevenue, AccountNumber, Type, Owner.Name, ( select AccountId, ActivityDate, ActivityType, CallType, Description, EndDateTime, Id, IsTask, OwnerId, StartDateTime, Subject, WhatId, WhoId from ActivityHistories where IsClosed=true and IsDeleted = false order by ActivityDate desc), (select AccountId, Amount, CloseDate, CreatedDate, Description, Id, IsClosed, IsDeleted, IsWon, LeadSource, Name, OwnerId, Pricebook2Id, StageName, Type from Opportunities order by CreatedDate desc) FROM Account where Id = '"+ req.query.accountid +"'";
+		var query = "SELECT Id, Name, AccountSource, AnnualRevenue, AccountNumber, Type, Owner.Name FROM Account where Id = '"+ req.query.accountid +"'";
 		console.log("AccountDetails Query   :" + query);
 
 		org.query({ query:query, oauth: req.session.oauth}, function(err, resp){
@@ -21,6 +22,90 @@ exports.getaccountdetails= function(org){
 		});
 	}
 };
+
+exports.getaccountactivity = function(org){
+	return function(req,res){
+		var query = "SELECT Id, (select AccountId, ActivityDate, ActivityType, CallType, Description, EndDateTime, Id, IsTask, OwnerId, StartDateTime, Subject, WhatId, WhoId from ActivityHistories where IsClosed=true and IsDeleted = false order by ActivityDate desc) FROM Account where Id = '"+ req.query.accountid.trim() +"'";
+		org.query({ query:query, oauth: req.session.oauth}, function(err, resp){
+			if(!err && resp.records) {
+				res.send(200,""+resp.records[0]);
+			}
+		});
+	}
+};
+
+exports.getintroducedondate = function(org){
+	return function(req,res){
+		var query = "select ConvertedAccountId, ConvertedDate, CreatedDate, Description, Id, Name from Lead where ConvertedAccountId ='"+ req.query.accountid.trim() +"'";
+		org.query({ query:query, oauth: req.session.oauth}, function(err, resp){
+			if(!err && resp.records) {
+				console.log("AccountDates Query  Result :" + util.inspect(resp.records[0], { showHidden: false }));
+				res.send(200, resp.records[0]._fields.createddate.substr(0,10));
+			}
+		});
+	}
+};
+ 
+exports.getclientsincedate = function(org){
+	return function(req,res){
+		var query = "select ConvertedAccountId, ConvertedDate, CreatedDate, Description, Id, Name from Lead where ConvertedAccountId ='"+ req.query.accountid.trim() +"'";
+		org.query({ query:query, oauth: req.session.oauth}, function(err, resp){
+			if(!err && resp.records) {
+				console.log("AccountDates Query  Result :" + util.inspect(resp.records[0], { showHidden: false }));
+				res.send(200, resp.records[0]._fields.converteddate.substr(0,10));
+			}
+		});
+	}
+};
+
+exports.getimetoacquire = function(org){
+	return function(req,res){
+		var query = "select CreatedDate from Lead where ConvertedAccountId ='"+ req.query.accountid.trim() +"'";
+		org.query({ query:query, oauth: req.session.oauth}, function(err, resp){
+			if(!err && resp.records) {
+				console.log("TimeToacquire Query-1  Result :" + util.inspect(resp.records[0], { showHidden: false }));
+				var introducedondate = resp.records[0]._fields.createddate.substr(0,10);
+				
+				var subquery = "select CloseDate from Opportunity where  IsWon = true and IsClosed = true and IsDeleted = false and AccountId='"+ req.query.accountid.trim() +"' order by CloseDate";
+				org.query({ query:subquery, oauth: req.session.oauth}, function(err, resp){
+					if(!err && resp.records) {
+						console.log("TimeToacquire Query-2  Result :" + util.inspect(resp.records[0], { showHidden: false }));
+						if(resp.records.length >0 ){
+							var oppclosedate = resp.records[0]._fields.closedate.substr(0,10);
+
+							var startDate = moment(introducedondate, 'YYYY-M-DD')
+							var endDate = moment(oppclosedate, 'YYYY-M-DD')
+							
+							var daysDiff = endDate.diff(startDate, 'days')
+
+							res.send(200, daysDiff+" days" );
+						}else
+							res.send(200, "Data Not Avaiable" );
+						
+					}
+				});
+			}
+		});
+	}
+};
+
+exports.getlifetimevalue = function(org){
+	return function(req,res){
+		var query = "select Amount, CloseDate, StageName from Opportunity where  IsWon = true and IsClosed = true and IsDeleted = false and AccountId='"+ req.query.accountid.trim() +"' order by CloseDate";
+		org.query({ query:query, oauth: req.session.oauth}, function(err, resp){
+			if(!err && resp.records) {
+				var clv=0;
+				console.log("CustomerLifeTimeValue Query  Result :" + util.inspect(resp.records, { showHidden: false }));
+				if(resp.records.length > 0 ){
+					for(var i=0; i< resp.records.length; i++)
+						clv += resp.records[i]._fields.amount
+				}
+				res.send(200, ""+accounting.formatMoney(clv));
+			}
+		});
+	}
+};	
+
 
 exports.gettotalrevenueofall = function(org){
 	return function(req,res){
