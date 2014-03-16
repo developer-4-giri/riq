@@ -124,14 +124,14 @@ var ADAPT_CONFIG = {
 				{% if accountdetails._fields.activityhistories && accountdetails._fields.activityhistories.records %}
 					<ul>
 						<li> 
-							<div class="grid_9 align_center" > 
+							<div class="grid_9 align_center" style="margin-bottom:-7px !important;"> 
 								<div class="prefix_2 grid_3" > 
 									<lable id="client-timeline-desc" style="align:center" > Client Timeline :  {{ client_summary.revenue.revenue_contr }}  </lable>
 								</div>
 							</div>
 						</li>
 						<li> 
-							<div class="grid_9 align_center" > 
+							<div class="grid_9 align_center" style="margin-bottom:-7px !important;"> 
 								<div class="prefix_3 grid_1" > 
 									<canvas id="first-timeline" class="first-timeline"> </canvas>
 								</div>
@@ -140,7 +140,7 @@ var ADAPT_CONFIG = {
 							{% for x in accountdetails._fields.activityhistories.records %}
 								{% if loop.index % 2 == 0 %}
 									<li> 
-										<div class="grid_9 align_center" >
+										<div class="grid_9 align_center" style="margin-bottom:-7px !important;">
 											<div id="left_data_grid_{{ loop.index }}" class="grid_3 align_right_bottom" onMouseOver="showEventFullDetails(this.id,'{{ x.Description}}')" onMouseOut="showEventSummaryDetails(this.id, '{{ x.event_date }}', ' {{ x.event_summary }}')"> 
 													<lable class="left-label"> {{x.ActivityDate}} <br>  {{ x.Subject}}  </lable>
 											</div>
@@ -152,7 +152,7 @@ var ADAPT_CONFIG = {
 								{% endif %}
 								{% if loop.index % 2 != 0 %}
 									<li> 
-										<div class="grid_9 align_center" >
+										<div class="grid_9 align_center" style="margin-bottom:-7px !important;">
 											<div class="grid_1 prefix_3 suffix_1" >
 												<canvas id="right_canvas_{{ loop.index }}" class="right-timeline"> </canvas>
 											</div> 
@@ -239,6 +239,7 @@ var ADAPT_CONFIG = {
 			$(".right-timeline").each(function(){  
 				drawCanvas(this.id,content_area_li_height, content_area_li_width, "RIGHT");
 			} );
+			
 		}
 	);
 	
@@ -302,6 +303,15 @@ var ADAPT_CONFIG = {
 		if(count > 0)
 			drawChart(touchpointStatsArray, "touch-point-chart",  "total-touchpoint");
 	};
+	
+	
+	calculateTimlineDuration = function(){
+		var today = new Date();
+		var clientSinceDate = $("#client-since").text();
+		
+		alert(clientSinceDate +" : "+ today );
+	};
+	
 </script>
 
 </html>
