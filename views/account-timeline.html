@@ -118,7 +118,6 @@ var ADAPT_CONFIG = {
 		<div id="content">
 			<div class="container_12">
 				<div class="grid_12">
-					<lable id="activity-data-lable" class=".data-load-controls" service_url="getaccountactivity"></lable>
 				</div>
 				
 				<div id="event-content" class="grid_9" style="overflow-y:scroll; overflow-x: hidden">
@@ -271,7 +270,6 @@ var ADAPT_CONFIG = {
     	var account_id = $('#client-id').text().trim();
     	var service_url = "/getaccountactivity";
 		
-		alert("Calling account acityvy");
 		$.ajax({
 		  url: service_url,
 		  data: {"accountid": account_id},
