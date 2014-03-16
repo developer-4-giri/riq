@@ -156,7 +156,7 @@ var ADAPT_CONFIG = {
 											<div class="grid_1 prefix_3 suffix_1" >
 												<canvas id="right_canvas_{{ loop.index }}" class="right-timeline"> </canvas>
 											</div> 
-											<div id="right_data_grid_{{ loop.index }}" class="grid_3 align_left_bottom" onMouseOver="showEventFullDetails(this.id,'{{ x.Description}}')" onMouseOut="showEventSummaryDetails(this.id, '{{ x.event_date }}', ' {{ x.event_summary }}')"> 
+											<div id="right_data_grid_{{ loop.index }}" class="grid_3 align_left_bottom" style="margin-left:-60px;" onMouseOver="showEventFullDetails(this.id,'{{ x.Description}}')" onMouseOut="showEventSummaryDetails(this.id, '{{ x.event_date }}', ' {{ x.event_summary }}')"> 
 												<lable class="right-label"> {{x.ActivityDate}} <br>  {{ x.Subject}}  </lable>
 											</div>
 										</div>
