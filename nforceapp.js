@@ -92,6 +92,8 @@ app.get('/getclientsincedate', account.getclientsincedate(org));
 app.get('/getlifetimevalue', account.getlifetimevalue(org));
 app.get('/getimetoacquire', account.getimetoacquire(org));
 
+app.get('/base', routes.base);
+
 app.get('/timeline', timline.drawtimeline);
 app.get('/strem-account', account.streamaccounts(org));
 
