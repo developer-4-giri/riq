@@ -17,7 +17,7 @@ exports.getaccountdetails= function(org){
 				console.log("AccountDetails Query  Result :" + util.inspect(resp.records, { showHidden: false }));
 
 				console.log(util.inspect(resp.records[0]._fields.owner, { showHidden: false }));
-				res.render("account-timeline.html", { page_title: 'Client Timeline - '+resp.records[0]._fields.name, accountdetails: resp.records[0]});
+				res.render("timeline-base.html", { page_title: 'Client Timeline - '+resp.records[0]._fields.name, accountdetails: resp.records[0]});
 			}
 		});
 	}
@@ -54,12 +54,12 @@ exports.getintroducedondate = function(org){
  
 exports.getclientsincedate = function(org){
 	return function(req,res){
-		var query = "select ConvertedAccountId, ConvertedDate, CreatedDate, Description, Id, Name from Lead where ConvertedAccountId ='"+ req.query.accountid +"'";
+		var query = "select AccountId, Select Id , (select AccountId, Amount,CloseDate, Description from Opportunities  where IsClosed=true and IsDeleted=false and IsWon=true order by CloseDate limit 1 ) from Account where id ='"+ req.query.accountid +"'";
 		org.query({ query:query, oauth: req.session.oauth}, function(err, resp){
-			if(!err && resp.records) {
-				console.log("AccountDates Query  Result :" + util.inspect(resp.records[0], { showHidden: false }));
-				if(resp.records.length > 0)
-					res.send(200, resp.records[0]._fields.converteddate.substr(0,10));
+			if(!err && resp.records && resp.records.length > 0 && resp.records[0]._fields.opportunities && resp.records[0]._fields.opportunities.records[0]) {
+				console.log("ClientSince Query  Result :" + util.inspect(resp.records[0], { showHidden: false }));
+				if(resp.records[0]._fields.opportunities.records[0].closedate)
+					res.send(200, resp.records[0]._fields.opportunities.records[0].closedate.substr(0,10));
 				else
 					res.send(200, "Data Not Available");
 			}

@@ -124,14 +124,14 @@ var ADAPT_CONFIG = {
 				{% if accountdetails._fields.activityhistories && accountdetails._fields.activityhistories.records %}
 					<ul>
 						<li> 
-							<div class="grid_9 align_center" style="margin-bottom:-7px !important;"> 
+							<div class="grid_9 align_center timeline-grid" style="margin-bottom:-7px !important;"> 
 								<div class="prefix_2 grid_3" > 
 									<lable id="client-timeline-desc" style="align:center" > Client Timeline :  {{ client_summary.revenue.revenue_contr }}  </lable>
 								</div>
 							</div>
 						</li>
 						<li> 
-							<div class="grid_9 align_center" style="margin-bottom:-7px !important;"> 
+							<div class="grid_9 align_center timeline-grid" style="margin-bottom:-7px !important;"> 
 								<div class="prefix_3 grid_1" > 
 									<canvas id="first-timeline" class="first-timeline"> </canvas>
 								</div>
@@ -140,7 +140,7 @@ var ADAPT_CONFIG = {
 							{% for x in accountdetails._fields.activityhistories.records %}
 								{% if loop.index % 2 == 0 %}
 									<li> 
-										<div class="grid_9 align_center" style="margin-bottom:-7px !important;">
+										<div class="grid_9 align_center timeline-grid" style="margin-bottom:-6px !important;">
 											<div id="left_data_grid_{{ loop.index }}" class="grid_3 align_right_bottom" onMouseOver="showEventFullDetails(this.id,'{{ x.Description}}')" onMouseOut="showEventSummaryDetails(this.id, '{{ x.event_date }}', ' {{ x.event_summary }}')"> 
 													<lable class="left-label"> {{x.ActivityDate}} <br>  {{ x.Subject}}  </lable>
 											</div>
@@ -152,11 +152,11 @@ var ADAPT_CONFIG = {
 								{% endif %}
 								{% if loop.index % 2 != 0 %}
 									<li> 
-										<div class="grid_9 align_center" style="margin-bottom:-7px !important;">
+										<div class="grid_9 align_center timeline-grid" style="margin-bottom:-7px !important;">
 											<div class="grid_1 prefix_3 suffix_1" >
 												<canvas id="right_canvas_{{ loop.index }}" class="right-timeline"> </canvas>
 											</div> 
-											<div id="right_data_grid_{{ loop.index }}" class="grid_3 align_left_bottom" style="margin-left:-60px;" onMouseOver="showEventFullDetails(this.id,'{{ x.Description}}')" onMouseOut="showEventSummaryDetails(this.id, '{{ x.event_date }}', ' {{ x.event_summary }}')"> 
+											<div id="right_data_grid_{{ loop.index }}" class="grid_3 right_data_grid" onMouseOver="showEventFullDetails(this.id,'{{ x.Description}}')" onMouseOut="showEventSummaryDetails(this.id, '{{ x.event_date }}', ' {{ x.event_summary }}')"> 
 												<lable class="right-label"> {{x.ActivityDate}} <br>  {{ x.Subject}}  </lable>
 											</div>
 										</div>
@@ -224,8 +224,14 @@ var ADAPT_CONFIG = {
 			
 			var content_area_height =  height - $("#header").height() - ($("#footer").height())*1.5 ;
 			var content_area_li_height =  content_area_height / 6;
-			var content_area_li_width =  width / 12;
+			var content_area_li_width =  width / 9;
 			
+			var left_margin = (60/110) * content_area_li_width;
+			
+			$('.right_data_grid').each(function(){
+				$(this).css({"margin-left":"-"+left_margin+"px !important;"});	
+			});
+	
 			$("#event-content").css( { height: content_area_height });
 			
 			$(".first-timeline").each(function(){ 
@@ -251,6 +257,7 @@ var ADAPT_CONFIG = {
 		$("#event-details-section").text("Event Details : " +  fullDetails);
 	};
 
+	
     $('.data-load-controls').each(function() {
     	
     	var account_id = $('#client-id').text().trim();
