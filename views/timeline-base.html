@@ -1,0 +1,267 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="assets/ico/favicon.ico">
+
+    <title>TimelineIQ</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/dashbaord.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	<script src="javascripts/timeline.js"></script>
+	<script src="javascripts/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript">
+	      google.load("visualization", "1", {packages:["corechart"]});
+	</script>
+	
+	<style>
+	::-webkit-scrollbar { 
+	    display: none; 
+	}
+	</style>
+  </head>
+
+  <body>
+
+    <div id="header" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">TimelineIQ</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="#">Overview</a></li>
+            <li><a href="#">Reports</a></li>
+            <li><a href="#">Analytics</a></li>
+            <li><a href="#">Export</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+		<div id="client-id" class="hidden"> {{ accountdetails._fields.id }} </div>
+		<div id="client-annual-revenue" class="hidden"> {{ accountdetails._fields.annualrevenue }} </div>
+
+          <div id="client-details" class="row">
+			  <div class="panel panel-info">
+			  	  <div class="panel-heading">
+					     {{ accountdetails._fields.name }} 
+					     {% if accountdetails._fields.type %} 
+							( {{ accountdetails._fields.type}} )						
+						{% endif %}
+				  </div>
+				  <div class="panel-body">
+					  <div class="col-sm-4 text-left">
+							<label> Client Since : </label> <span id="client-since" class="data-load-controls" service_url="getclientsincedate"> </span> <br> 
+							<label> Introduced On : </label> <span id="introduced-on" class="data-load-controls" service_url="getintroducedondate"> </span> <br> 
+							<label> Time to Acquire : </label> <span id="time-to-acquire" class="data-load-controls" service_url="getimetoacquire" > </span> <br> 
+							<label> Acquired Through : </label> <span id="acquired-through" class="data-load-controls" service_url="getacquiredthrough"> </span> <br> 
+				      </div>
+					  <div class="col-sm-4 text-left">
+							<label> Record Owner : </label>
+							{% if accountdetails._fields.owner.Name %} 
+								{{ accountdetails._fields.owner.Name }}								
+							{% endif %}
+							<label> Product/Services Bought : </label> <span id="prod-ser-bought" class="data-load-controls" service_url="getproductsbought"> </span> <br>
+							<label id="det-sec2-2-label" > Customer Lifetime Value (CLV) : </label> <span id="cust-life-value" class="data-load-controls" service_url="getlifetimevalue"> </span> <br> 
+							<label id="det-sec2-3-label" > % Revenue Contribution : </label> <span id="revenue-contr" class="data-load-controls" service_url="getannualrevenuepercent"> </span>  <br> 
+				      </div>
+					  <div class="col-sm-4 text-center">
+							<label id="total-touchpoint-label" > Total Number of Touchpoint(Meaningful): </label> <span id="total-touchpoint" > </span> 
+							<div id="touch-point-chart"> Chart Div</div>
+					  </div>
+				 </div>
+			  </div>
+		  </div>
+
+		{% if accountdetails._fields.activityhistories && accountdetails._fields.activityhistories.records %}
+
+	          <div class="row">
+	  	        <div class="col-lg-4">
+		        &nbsp;
+		        </div> 
+		        <div class="col-lg-3">
+					<label> Timline :  </label>	 <span id="client-timeline"> 365 days</span>
+	 	        </div>
+		        <div class="col-lg-4">
+		        &nbsp;
+		        </div>
+	          </div>
+	          
+	          <div class="row">
+		        <div class="col-lg-4">
+		        &nbsp;
+		        </div>
+		        <div class="col-lg-3">
+	 	        	<canvas id="first_timeline_canvas" class="first-timeline"> </canvas>
+	 	        </div>
+		        <div class="col-lg-4">
+	          	&nbsp;
+		        </div>
+	          </div>
+	          
+			{% for x in accountdetails._fields.activityhistories.records %}
+				{% if loop.index % 2 == 0 %}
+		          <div class="row">
+		  	        <div class="col-lg-4 text-right">
+						<span class="left-label"> {{x.ActivityDate}} <br>  {{ x.Subject}}  </span>
+			        </div> 
+			        <div class="col-lg-3">
+						<canvas id="left_canvas_{{ loop.index }}"  class="left-timeline"> </canvas>
+		 	        </div>
+			        <div class="col-lg-4">
+			        </div>
+		          </div>
+				{% endif %}
+				{% if loop.index % 2 != 0 %}
+		          <div class="row">
+		  	        <div class="col-lg-4">
+			        </div> 
+			        <div class="col-lg-3">
+						<canvas id="right_canvas_{{ loop.index }}" class="right-timeline"> </canvas>
+		 	        </div>
+			        <div class="col-lg-4 text-left">
+						<span class="right-label"> {{x.ActivityDate}} <br>  {{ x.Subject}}  </span>
+			        </div>
+		          </div>
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div id="footer" class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container">
+          <div class="navbar-footer">
+			ABCD
+        </div>
+      </div>
+	</div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+	<script>
+		function Touchpoint(desc,number) {
+			this.desc = desc;
+			this.number = number;
+	  	};
+	
+		var activity_map = {};
+		{% for x in accountdetails._fields.activityhistories.records %}
+			type = '{{ x.Subject }}';
+			if(activity_map[type])
+				activity_map[type] += 1;
+			else
+				activity_map[type] = 1;
+		{% endfor %}
+	</script>
+
+	<script >
+	var color_counter = 0;
+
+	$( document ).ready( 
+		function(){
+			console.log('On document ready called');
+	
+		var touchpointStatsArray = new Array();
+		var count=0;
+		for(key in activity_map){
+			touchpointStatsArray[ count++ ] = new Touchpoint( key ,  activity_map[key]);
+		}
+
+		drawChart(touchpointStatsArray, "touch-point-chart",  "total-touchpoint");
+
+			var width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+			var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+			
+			var content_area_height =  height - $("#header").height() - ($("#client-details").height()) - ($("#footer").height());
+			var content_area_li_height =  content_area_height / 6;
+			var content_area_li_width =  width / 9;
+			
+			alert(content_area_li_height +' x '+ content_area_li_width);
+			
+			$(".first-timeline").each(function(){ 
+				drawCanvas(this.id,content_area_li_height, content_area_li_width, "FIRST");
+			} );
+			
+			$(".left-timeline").each(function(){  
+				drawCanvas(this.id,content_area_li_height, content_area_li_width, "LEFT");
+			} );
+
+			$(".right-timeline").each(function(){  
+				drawCanvas(this.id,content_area_li_height, content_area_li_width, "RIGHT");
+			} );
+			
+		}
+	);
+	
+    $('.data-load-controls').each(function() {
+    	
+    	var account_id = $('#client-id').text().trim();
+    	var service_url = $(this).attr('service_url');
+    	var caller_id = $(this).attr('id');
+		
+		$.ajax({
+		  url: "/"+service_url,
+		  data: {"accountid": account_id},
+		  success:function(data){  
+		  	console.log(service_url+" : "+data);
+		  	$("#"+caller_id).text(data); 
+		  }
+		});
+
+    });
+
+	calculateTimlineDuration = function(){
+		var today = new Date();
+		var clientSinceDate = $("#client-since").text();
+		
+		alert(clientSinceDate +" : "+ today );
+	};
+	</script>  
+  </body>
+</html>
