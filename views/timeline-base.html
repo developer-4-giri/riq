@@ -30,8 +30,11 @@
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script type="text/javascript">
 	      google.load("visualization", "1", {packages:["corechart"]});
+
+	$(function (){ 
+		$("[data-toggle='popover']").popover();
+	});
 	</script>
-	
 	<style>
 	::-webkit-scrollbar { 
 	    display: none; 
@@ -91,19 +94,23 @@
 				  </div>
 				  <div class="panel-body">
 					  <div class="col-sm-4 text-left">
-							<label> Client Since : </label> <span id="client-since" class="data-load-controls" service_url="getclientsincedate"> </span> <br> 
-							<label> Introduced On : </label> <span id="introduced-on" class="data-load-controls" service_url="getintroducedondate"> </span> <br> 
-							<label> Time to Acquire : </label> <span id="time-to-acquire" class="data-load-controls" service_url="getimetoacquire" > </span> <br> 
-							<label> Acquired Through : </label> <span id="acquired-through" class="data-load-controls" service_url="getacquiredthrough"> </span> <br> 
+							<label> Product/Services Bought : </label> <span id="prod-ser-bought" class="data-load-controls" service_url="getproductsbought"> </span> <br>
+							<p>
+								<label> Client Since : </label> <span id="client-since" class="data-load-controls" service_url="getclientsincedate"> </span> <br> 
+								<label> Introduced On : </label> <span id="introduced-on" class="data-load-controls" service_url="getintroducedondate"> </span> <br> 
+								<label> Time to Acquire : </label> <span id="time-to-acquire" class="data-load-controls" service_url="getimetoacquire" > </span> <br> 
+								<label> Acquired Through : </label> <span id="acquired-through" class="data-load-controls" service_url="getacquiredthrough"> </span> <br> 
+							</p>
 				      </div>
 					  <div class="col-sm-4 text-left">
 							<label> Record Owner : </label>
 							{% if accountdetails._fields.owner.Name %} 
 								{{ accountdetails._fields.owner.Name }}								
 							{% endif %}
-							<label> Product/Services Bought : </label> <span id="prod-ser-bought" class="data-load-controls" service_url="getproductsbought"> </span> <br>
-							<label id="det-sec2-2-label" > Customer Lifetime Value (CLV) : </label> <span id="cust-life-value" class="data-load-controls" service_url="getlifetimevalue"> </span> <br> 
-							<label id="det-sec2-3-label" > % Revenue Contribution : </label> <span id="revenue-contr" class="data-load-controls" service_url="getannualrevenuepercent"> </span>  <br> 
+							<p>
+								<label id="det-sec2-2-label" > Customer Lifetime Value (CLV) : </label> <span id="cust-life-value" class="data-load-controls" service_url="getlifetimevalue"> </span> <br> 
+								<label id="det-sec2-3-label" > % Revenue Contribution : </label> <span id="revenue-contr" class="data-load-controls" service_url="getannualrevenuepercent"> </span>  <br> 
+							</p>
 				      </div>
 					  <div class="col-sm-4 text-center">
 							<label id="total-touchpoint-label" > Total Number of Touchpoint(Meaningful): </label> <span id="total-touchpoint" > </span> 
@@ -116,51 +123,61 @@
 		{% if accountdetails._fields.activityhistories && accountdetails._fields.activityhistories.records %}
 
 	          <div class="row">
-	  	        <div class="col-lg-4">
+	  	        <div class="col-lg-5">
 		        &nbsp;
 		        </div> 
-		        <div class="col-lg-3">
+		        <div class="col-lg-2 text-center">
 					<label> Timline :  </label>	 <span id="client-timeline"> 365 days</span>
 	 	        </div>
-		        <div class="col-lg-4">
+		        <div class="col-lg-5">
 		        &nbsp;
 		        </div>
 	          </div>
 	          
 	          <div class="row">
-		        <div class="col-lg-4">
+		        <div class="col-lg-5">
 		        &nbsp;
 		        </div>
-		        <div class="col-lg-3">
+		        <div class="col-lg-2 align_center">
 	 	        	<canvas id="first_timeline_canvas" class="first-timeline"> </canvas>
 	 	        </div>
-		        <div class="col-lg-4">
+		        <div class="col-lg-5">
 	          	&nbsp;
 		        </div>
 	          </div>
 	          
 			{% for x in accountdetails._fields.activityhistories.records %}
 				{% if loop.index % 2 == 0 %}
-		          <div class="row">
-		  	        <div class="col-lg-4 text-right">
-						<span class="left-label"> {{x.ActivityDate}} <br>  {{ x.Subject}}  </span>
+		          <div class="row fixedheight" >
+		  	        <div class="col-lg-5 text-right">
+						<span class="left-label"> 
+							{% if x.ActivityDate %}  {{ x.ActivityDate }}	{% endif %} 
+							<br>
+							{% if x.Subject %}  {{ x.Subject }}	{% endif %}
+						</span>
 			        </div> 
-			        <div class="col-lg-3">
+			        <div class="col-lg-2 align_center" data-container="body" data-toggle="popover" data-placement="left" data-title="{{ x.Subject }}"  data-content="{% if x.ActivityDate %}  {{ x.ActivityDate }}	{% endif %} {% if x.Description %}  {{ x.Description }}	{% endif %} ">
 						<canvas id="left_canvas_{{ loop.index }}"  class="left-timeline"> </canvas>
 		 	        </div>
-			        <div class="col-lg-4">
+			        <div class="col-lg-5">
+			        &nbsp;
 			        </div>
 		          </div>
 				{% endif %}
 				{% if loop.index % 2 != 0 %}
-		          <div class="row">
-		  	        <div class="col-lg-4">
-			        </div> 
-			        <div class="col-lg-3">
+		          <div class="row" >
+		  	        <div class="col-lg-5">
+			        &nbsp;
+					</div> 
+			        <div class="col-lg-2 align_center" data-container="body" data-toggle="popover" data-placement="right" data-title="{{ x.Subject }}"  data-content="{% if x.ActivityDate %}  {{ x.ActivityDate }}	{% endif %} {% if x.Description %}  {{ x.Description }}	{% endif %} ">
 						<canvas id="right_canvas_{{ loop.index }}" class="right-timeline"> </canvas>
 		 	        </div>
-			        <div class="col-lg-4 text-left">
-						<span class="right-label"> {{x.ActivityDate}} <br>  {{ x.Subject}}  </span>
+			        <div class="col-lg-5 text-left">
+						<span class="right-label"> 
+							{% if x.ActivityDate %}  {{ x.ActivityDate }}	{% endif %} 
+							<br>
+							{% if x.Subject %}  {{ x.Subject }}	{% endif %}
+						</span>
 			        </div>
 		          </div>
 				{% endif %}
@@ -221,9 +238,7 @@
 			var content_area_height =  height - $("#header").height() - ($("#client-details").height()) - ($("#footer").height());
 			var content_area_li_height =  content_area_height / 6;
 			var content_area_li_width =  width / 9;
-			
-			alert(content_area_li_height +' x '+ content_area_li_width);
-			
+
 			$(".first-timeline").each(function(){ 
 				drawCanvas(this.id,content_area_li_height, content_area_li_width, "FIRST");
 			} );
