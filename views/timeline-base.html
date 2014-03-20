@@ -156,7 +156,7 @@
 							{% if x.Subject %}  {{ x.Subject }}	{% endif %}
 						</span>
 			        </div> 
-			        <div class="col-lg-2 align_center" data-container="body" data-toggle="popover" data-placement="left" data-title="{{ x.Subject }}"  data-content="{% if x.ActivityDate %}  {{ x.ActivityDate }}	{% endif %} {% if x.Description %}  {{ x.Description }}	{% endif %} ">
+			        <div class="col-lg-2 align_center" data-container="body" data-toggle="popover" data-placement="left" data-title=" {% if x.ActivityDate %}  {{ x.ActivityDate }}	- {% endif %} {{ x.Subject }}"  data-content="{% if x.Description %} {{ x.Description }}	{% endif %} ">
 						<canvas id="left_canvas_{{ loop.index }}"  class="left-timeline"> </canvas>
 		 	        </div>
 			        <div class="col-lg-5">
@@ -169,7 +169,7 @@
 		  	        <div class="col-lg-5">
 			        &nbsp;
 					</div> 
-			        <div class="col-lg-2 align_center" data-container="body" data-toggle="popover" data-placement="right" data-title="{{ x.Subject }}"  data-content="{% if x.ActivityDate %}  {{ x.ActivityDate }}	{% endif %} {% if x.Description %}  {{ x.Description }}	{% endif %} ">
+			        <div class="col-lg-2 align_center" data-container="body" data-toggle="popover" data-placement="right" data-title=" {% if x.ActivityDate %}  {{ x.ActivityDate }} - {% endif %} {{ x.Subject }}"  data-content="{% if x.Description %} {{ x.Description }}	{% endif %} ">
 						<canvas id="right_canvas_{{ loop.index }}" class="right-timeline"> </canvas>
 		 	        </div>
 			        <div class="col-lg-5 text-left">
