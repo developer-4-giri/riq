@@ -25,21 +25,14 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-	<script src="javascripts/timeline.js"></script>
-	<script src="javascripts/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script type="text/javascript">
 	      google.load("visualization", "1", {packages:["corechart"]});
 
-	$(function (){ 
-		$("[data-toggle='popover']").popover();
-	});
+		$(function (){ 
+			$("[data-toggle='popover']").popover();
+		});
 	</script>
-	<style>
-	::-webkit-scrollbar { 
-	    display: none; 
-	}
-	</style>
   </head>
 
   <body>
@@ -73,9 +66,9 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Overview</a></li>
-            <li><a href="#">Reports</a></li>
-            <li><a href="#">Analytics</a></li>
+            <li><a href="/account">Accounts</a></li>
+            <li class="active"><a href="#">Account - Timeline</a></li>
+            <li><a href="#">Something else</a></li>
             <li><a href="#">Export</a></li>
           </ul>
         </div>
@@ -198,8 +191,9 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+	<script src="js/timeline.js"></script>
+	<script src="js/jquery-1.11.0.min.js"></script>
 
 	<script>
 		function Touchpoint(desc,number) {
@@ -208,13 +202,15 @@
 	  	};
 	
 		var activity_map = {};
-		{% for x in accountdetails._fields.activityhistories.records %}
-			type = '{{ x.Subject }}';
-			if(activity_map[type])
-				activity_map[type] += 1;
-			else
-				activity_map[type] = 1;
-		{% endfor %}
+		{% if accountdetails._fields.activityhistories && accountdetails._fields.activityhistories.records %}
+			{% for x in accountdetails._fields.activityhistories.records %}
+				type = '{{ x.Subject }}';
+				if(activity_map[type])
+					activity_map[type] += 1;
+				else
+					activity_map[type] = 1;
+			{% endfor %}
+		{% endif %}
 	</script>
 
 	<script >

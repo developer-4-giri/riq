@@ -2,7 +2,7 @@
  * GET home page.
  */
 exports.index = function(req, res){
-  res.render('login', { title: 'Timeline IQ - Salesforce Login' })
+  res.render('bootstrap/login.html', { title: 'Timeline IQ - Login' })
 };
 
 exports.base = function(req, res){
