@@ -1,10 +1,10 @@
 {
-  "name": "riq-webapp",
+  "name": "timelineiq-webapp",
   "version": "0.0.1",
   "private": true,
   "main": "app.js",
   "scripts": {
-    "start": "node nforceapp.js"
+    "start": "node timelineiq.js"
   },
   "repository": {
     "type": "git",
