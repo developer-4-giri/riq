@@ -1,11 +1,6 @@
 exports.login = function(req, res){
     req.session.destroy();
-    req.logout();
-
-    var userName = req.body.userName;
-    var userPass = req.body.userPass;
-    
-    console.log('%s %s', userName, userPass);
+    res.render('bootstrap/login.html', { title: 'TimelineIQ - Login' });
 };
 
 exports.sflogin = function(org){
