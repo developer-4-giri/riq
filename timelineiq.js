@@ -12,12 +12,12 @@ var nforce = require('nforce'),
 var port = process.env.PORT || 3001; 
 
 var org = nforce.createConnection({
-	  //clientId: '3MVG9A2kN3Bn17huFN0b_0IIMm1QeLiR7ixYy5D60OdsqPcle0PF2HN.RByIabew5yDR4KdZ6SrTz_r9liqZG',
-	  //clientSecret: '8093287766885948229',
-	  //redirectUri: 'http://localhost:3001/auth/tiqconnect/callback',
-	  clientId: '3MVG9A2kN3Bn17huFN0b_0IIMm64dpwfNyetlmBv0GQj0cmT49ZyKvvbmf07a16hY.e8TOIwoRR5aPr46eELb',
-	  clientSecret: '5288898514549948088',
-	  redirectUri: 'http://riq.herokuapp.com/auth/tiqconnect/callback',
+	  clientId: '3MVG9A2kN3Bn17huFN0b_0IIMm1QeLiR7ixYy5D60OdsqPcle0PF2HN.RByIabew5yDR4KdZ6SrTz_r9liqZG',
+	  clientSecret: '8093287766885948229',
+	  redirectUri: 'http://localhost:3001/auth/tiqconnect/callback',
+	  //clientId: '3MVG9A2kN3Bn17huFN0b_0IIMm64dpwfNyetlmBv0GQj0cmT49ZyKvvbmf07a16hY.e8TOIwoRR5aPr46eELb',
+	  //clientSecret: '5288898514549948088',
+	  //redirectUri: 'http://riq.herokuapp.com/auth/tiqconnect/callback',
 	  apiVersion: 'v27.0',  // optional, defaults to current salesforce API version
 	  environment: 'production',  // optional, salesforce 'sandbox' or 'production', production default
 	  mode: 'multi' // optional, 'single' or 'multi' user mode, multi default
@@ -65,20 +65,12 @@ app.get('/auth/tiqconnect/callback', function(req, res) {
 	res.redirect('/account');
 });
 
-app.get('/sf-login', function(req, res) {
-	console.log('Redirecting to SF login :'+ org.getAuthUri());
-	res.redirect(org.getAuthUri());
-});
-
-app.get('/logout', function(req, res) { 
-    req.session.destroy();
-    req.logout();
-    res.redirect('/login');
-});
-		
-app.get('/login', routes.index);
 app.get('/', routes.index);
-	
+app.get('/login', routes.index);
+
+app.get('/logout', login.logout);
+app.get('/sf-login', login.sflogin(org));
+
 app.get('/account', account.getaccounts(org));
 app.get('/accounttimeline', account.getaccountdetails(org));
 
@@ -91,8 +83,6 @@ app.get('/getintroducedondate', account.getintroducedondate(org));
 app.get('/getclientsincedate', account.getclientsincedate(org));
 app.get('/getlifetimevalue', account.getlifetimevalue(org));
 app.get('/getimetoacquire', account.getimetoacquire(org));
-
-app.get('/base', routes.base);
 
 app.get('/timeline', timline.drawtimeline);
 app.get('/strem-account', account.streamaccounts(org));
