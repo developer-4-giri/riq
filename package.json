@@ -2,7 +2,7 @@
   "name": "timelineiq-webapp",
   "version": "0.0.1",
   "private": true,
-  "main": "app.js",
+  "main": "timelineiq.js",
   "scripts": {
     "start": "node timelineiq.js"
   },
