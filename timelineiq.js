@@ -2,22 +2,22 @@ var nforce = require('nforce'),
 	express = require('express'), 
 	routes = require('./routes'),
 	account = require('./routes/account'),
-	login = require('./routes/login'),
+	usermanagment = require('./routes/usermanagment'),
 	path = require('path'),
 	swig = require('swig'),
-	util = require('util');
+	util = require('util'),
+	request = require('request');
 
 // all environments
 var port = process.env.PORT || 3001; 
 
 var org = nforce.createConnection({
-	  //clientId: '3MVG9A2kN3Bn17huFN0b_0IIMm1QeLiR7ixYy5D60OdsqPcle0PF2HN.RByIabew5yDR4KdZ6SrTz_r9liqZG',
-	  //clientSecret: '8093287766885948229',
-	  //redirectUri: 'http://localhost:3001/auth/tiqconnect/callback',
-	  clientId: '3MVG9A2kN3Bn17huFN0b_0IIMm64dpwfNyetlmBv0GQj0cmT49ZyKvvbmf07a16hY.e8TOIwoRR5aPr46eELb',
-	  clientSecret: '5288898514549948088',
-	  //redirectUri: 'https://timelineiq.herokuapp.com/auth/tiqconnect/callback',
-	  redirectUri: 'http://riq.herokuapp.com/auth/tiqconnect/callback',
+	  clientId: '3MVG9A2kN3Bn17huFN0b_0IIMm1QeLiR7ixYy5D60OdsqPcle0PF2HN.RByIabew5yDR4KdZ6SrTz_r9liqZG',
+	  clientSecret: '8093287766885948229',
+	  redirectUri: 'http://localhost:3001/auth/tiqconnect/callback',
+	  //clientId: '3MVG9A2kN3Bn17huFN0b_0IIMm64dpwfNyetlmBv0GQj0cmT49ZyKvvbmf07a16hY.e8TOIwoRR5aPr46eELb',
+	  //clientSecret: '5288898514549948088',
+	  //redirectUri: 'https://riq.herokuapp.com/auth/tiqconnect/callback',
 	  apiVersion: 'v27.0',  // optional, defaults to current salesforce API version
 	  environment: 'production',  // optional, salesforce 'sandbox' or 'production', production default
 	  mode: 'multi' // optional, 'single' or 'multi' user mode, multi default
@@ -37,6 +37,7 @@ app.set('views', __dirname + '/views');
 
 app.engine('html', swig.renderFile);
 
+app.use(express.bodyParser());
 app.use(express.logger());
 app.use(express.compress());
 app.use(express.json());
@@ -61,17 +62,23 @@ app.configure('production', function(){
 });
 
 app.get('/auth/tiqconnect/callback', function(req, res) {
-	//console.log("SF login success:" + util.inspect(res, { showHidden: false }));
+	console.log("SF login success:" + util.inspect(req.session.oauth, { showHidden: false }));
 
-	req.session.userAuthorised = 'Yes';
-	res.redirect('/account');
+	request(req.session.oauth.id+'?format=json&oauth_token='+ req.session.oauth.access_token, function (error, response, body) {
+		  if (!error && response.statusCode == 200) {
+			console.log("SF login success:" + util.inspect(body, { showHidden: false }));
+		    req.session.userdetails = JSON.parse(body);
+			res.redirect('/account');
+		  }
+	});
 });
 
-app.get('/', routes.index);
-app.get('/login', login.login);
 
-app.get('/logout', login.logout);
-app.get('/sf-login', login.sflogin(org));
+app.get('/', routes.index);
+app.get('/logout', usermanagment.logoutAndRedirectToHomePage);
+app.get('/login', usermanagment.clearSessionAndShowLoginPage);
+app.post('/timelinelogin', usermanagment.recordUserDetailsAndVerifySFLogin(org));
+app.get('/sf-login', usermanagment.redirectToSalesfroceUserPassLogin(org));
 
 app.get('/account', checkIfUserIsAutherisedBySalesForce, account.getaccounts(org));
 app.get('/strem-account', checkIfUserIsAutherisedBySalesForce, account.streamaccounts(org));

@@ -29,28 +29,101 @@
     <style>
     	body { padding-bottom: 5%; }
     </style>
+    
+ <style>
+    .modalDialog {
+        position: fixed;
+        font-family: Arial, Helvetica, sans-serif;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0,0,0,0.8);
+        z-index: 99999;
+        opacity:0;
+        -webkit-transition: opacity 400ms ease-in;
+        -moz-transition: opacity 400ms ease-in;
+        transition: opacity 400ms ease-in;
+        pointer-events: none;
+    }
+
+    .modalDialog:target {
+        opacity:1;
+        pointer-events: auto;
+    }
+
+    .modalDialog > div {
+        width: 400px;
+        position: relative;
+        margin: 10% auto;
+        padding: 5px 20px 13px 20px;
+        border-radius: 10px;
+        background: #fff;
+    }
+
+    .close {
+        background: #606061;
+        color: #FFFFFF;
+        line-height: 25px;
+        position: absolute;
+        right: -12px;
+        text-align: center;
+        top: -10px;
+        width: 24px;
+        text-decoration: none;
+        font-weight: bold;
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 12px;
+        border-radius: 12px;
+        -moz-box-shadow: 1px 1px 3px #000;
+        -webkit-box-shadow: 1px 1px 3px #000;
+        box-shadow: 1px 1px 3px #000;
+    }
+
+    .close:hover { background: #00d9ff; }
+    </style>   
   </head>
 
   <body>
 
-     <div id="header" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="/">TimelineIQ</a>
+          <a class="navbar-brand" href="#">TimelineIQ</a>
         </div>
         <div class="navbar-collapse collapse">
+	    {% if userdetails %}
           <ul class="nav navbar-nav navbar-right">
-          	{% if isUserAutherised == 'Yes' %}
-            <li><a href="/account">Dashboard </a></li>
-            {% endif %}
-            <li><a href="/login">Login</a></li>
+            <li><a href="/account">Dashboard</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{ userdetails.display_name }} <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider">..</li>
+                <li class="dropdown-header">User Session</li>
+                <li><a href="/logout"> Logout </a></li>
+              </ul>
+            </li>
           </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
-        </div>
+	    {% endif %}
+	    {% if !userdetails %}
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/login">Login</a></li>
+		  </ul>
+	    {% endif %}
+        </div><!--/.navbar-collapse -->
       </div>
     </div>
+    
+	<p><a href="#openModal">Open Modal</a></p>
+	<div id="openModal" class="modalDialog">
+	<div><a class="close" title="Close" href="#close">X</a>
+	<h2>Modal Box</h2>
+	<p>This is a sample modal box that can be created using the powers of CSS3.</p>
+	<p>You could do a lot of things here like have a pop-up ad that shows when your website loads, or create a login/register form for users.</p>
+	</div>
+	</div>
 
     <!-- Carousel
     ================================================== -->
@@ -63,7 +136,7 @@
       </ol>
       <div class="carousel-inner">
         <div class="item active">
-          <img data-src="holder.js/900x400/auto/#777:#7a7a7a/text:First slide" alt="First slide">
+          <img src="assets/image/first.jpg" width="60%" height="100%" alt="First slide">
           <div class="container">
             <div class="carousel-caption">
               <h1>Whats Importance of Timeline ?</h1>
@@ -98,26 +171,26 @@
     </div><!-- /.carousel -->
     
     <div class="container marketing">
-	      <!-- Three columns of text below the carousel -->
-	      <div class="row">
-	        <div class="col-lg-4">
-	          <h2>Heading</h2>
-	          <p>Small Note about Feature one.</p>
-	          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-	        </div><!-- /.col-lg-4 -->
-	        <div class="col-lg-4">
-	          <h2>Heading</h2>
-	          <p> A little marketing Tip or great image.</p>
-	          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-	        </div><!-- /.col-lg-4 -->
-	        <div class="col-lg-4">
-	          <h2>Heading</h2>
-	          <p> Make sure you tell some stories here.</p>
-	          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-	        </div><!-- /.col-lg-4 -->
-	      </div><!-- /.row -->
-      </div>
-    
+      <!-- Three columns of text below the carousel -->
+      <div class="row">
+        <div class="col-lg-4">
+          <h2>Heading</h2>
+          <p>Small Note about Feature one.</p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <h2>Heading</h2>
+          <p> A little marketing Tip or great image.</p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <h2>Heading</h2>
+          <p> Make sure you tell some stories here.</p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+      </div><!-- /.row -->
+    </div>
+ 
     <div id="footer" class="navbar navbar-inverse navbar-fixed-bottom">
       <div class="container text-center">
 	      <h3>Timeline IQ</h3>

@@ -1,3 +1,3 @@
 exports.index = function(req, res){
-    res.render('bootstrap/landing.html', { title: 'Timeline IQ - Login' , isUserAutherised: req.session.userAuthorised});
+    res.render('bootstrap/landing.html', { title: 'Timeline IQ - Login' , userdetails: req.session.userdetails });
 };

@@ -18,7 +18,7 @@ exports.getaccountdetails= function(org){
 				console.log("AccountDetails Query  Result - activityhistories :" + util.inspect(resp.records[0]._fields.activityhistories, { showHidden: false }));
 				
 				console.log(util.inspect(resp.records[0]._fields.owner, { showHidden: false }));
-				res.render("bootstrap/timeline.html", { page_title: 'Client Timeline - '+resp.records[0]._fields.name, accountdetails: resp.records[0]});
+				res.render("bootstrap/timeline.html", { page_title: 'Client Timeline - '+resp.records[0]._fields.name, accountdetails: resp.records[0], userdetails: req.session.userdetails });
 			}
 		});
 	}
@@ -226,7 +226,7 @@ exports.getaccounts = function(org){
 		org.query({query: query, oauth: req.session.oauth }, function(err, resp){
 			if(!err && resp.records) {
 				console.log("Account Query Result :" + util.inspect(resp.records, { showHidden: false }));
-				res.render("bootstrap/account.html", { accounts: resp.records });
+				res.render("bootstrap/account.html", { accounts: resp.records, userdetails: req.session.userdetails});
 			}
 		});  
 	}

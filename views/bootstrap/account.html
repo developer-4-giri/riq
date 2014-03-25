@@ -41,7 +41,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#">Dashboard</a></li>
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"> My Profile <b class="caret"></b></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{ userdetails.display_name }} <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="#">Settings</a></li>
                 <li><a href="#">Something else here</a></li>
@@ -51,9 +51,6 @@
               </ul>
             </li>
           </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
         </div>
       </div>
     </div>
@@ -94,7 +91,7 @@
 			                  </td>
 			                  <td>
 									{% if accountdetails._fields.type %} 
-										{{ accountdetails._fields.type}}								
+										{{ accountdetails._fields.type }}								
 									{% endif %}
 			                  </td>
 			                  <td>
