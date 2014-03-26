@@ -76,6 +76,7 @@ app.get('/logout', usermanagment.logoutAndRedirectToHomePage);
 app.get('/login', usermanagment.clearSessionAndShowLoginPage);
 app.post('/timelinelogin', usermanagment.recordUserDetailsAndVerifySFLogin(org));
 app.get('/sf-login', usermanagment.redirectToSalesfroceUserPassLogin(org));
+app.get('/userprofile', usermanagment.showUserProfilePage(org));
 
 app.get('/account', checkIfUserIsAutherisedBySalesForce, account.getaccounts(org));
 app.get('/strem-account', checkIfUserIsAutherisedBySalesForce, account.streamaccounts(org));

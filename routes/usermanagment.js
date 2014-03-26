@@ -6,6 +6,13 @@ exports.clearSessionAndShowLoginPage = function(req, res){
     res.render('bootstrap/login.html', { title: 'TimelineIQ - Login' });
 };
 
+exports.showUserProfilePage = function(org){
+	return function(req, res){
+		console.log(req.session.userdetails);
+	    res.render('bootstrap/userprofile.html', { title: 'TimelineIQ - User Profile', userdetails: req.session.userdetails });
+	}	
+};
+
 exports.recordUserDetailsAndVerifySFLogin = function(org){
 	return function(req, res){
 		var userName = req.param('username');
