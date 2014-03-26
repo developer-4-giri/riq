@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="assets/ico/favicon.ico">
+
+    <title>TimelineIQ</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/dashbaord.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	<script src="js/jquery-1.11.0.min.js"></script>
+    <style>
+    	body { padding-bottom: 5%; }
+    </style>
+  </head>
+
+  <body>
+
+    <div id="header" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">TimelineIQ</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/account">Dashboard</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{ userdetails.display_name }} <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Settings</a></li>
+                <li><a href="/userprofile">My Details</a></li>
+                <li class="divider">..</li>
+                <li class="dropdown-header">User Session</li>
+                <li><a href="/logout"> Logout </a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="#">User Profile</a></li>
+            <li><a href="/account">Account</a></li>
+            <li><a href="#">Something else</a></li>
+            <li><a href="#">Export</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <div id="client-details" class="row">
+			  <div class="panel panel-info">
+			  	  <div class="panel-heading">
+					{{ userdetails.display_name }} 
+				  </div>
+				  <div class="panel-body">
+	  		          <div class="row">
+			  	        <div class="col-lg-4">
+							User Name:
+				        </div> 
+			  	        <div class="col-lg-8">
+			  	        	{{ userdetails.username }}
+				        </div> 
+					  </div>
+	  		          <div class="row">
+			  	        <div class="col-lg-4">
+							Nickname:
+				        </div> 
+			  	        <div class="col-lg-8">
+			  	        	{{ userdetails.nick_name }}
+				        </div> 
+					  </div>
+	  		          <div class="row">
+			  	        <div class="col-lg-4">
+							Email:
+				        </div> 
+			  	        <div class="col-lg-8">
+			  	        	{{ userdetails.email }}
+				        </div> 
+					  </div>
+	  		          <div class="row">
+			  	        <div class="col-lg-4">
+							FirstName LastName:
+				        </div> 
+			  	        <div class="col-lg-8">
+			  	        	{{ userdetails.first_name}}  {{ userdetails.last_name}} 
+				        </div> 
+					  </div>
+	  		          <div class="row">
+			  	        <div class="col-lg-4">
+							Is User Asserted:
+				        </div> 
+			  	        <div class="col-lg-8">
+			  	        	{{ userdetails.asserted_user }}
+				        </div> 
+					  </div>
+	  		          <div class="row">
+			  	        <div class="col-lg-4">
+							User Type:
+				        </div> 
+			  	        <div class="col-lg-8">
+			  	        	{{ userdetails.user_type }}
+				        </div> 
+					  </div>
+	  		          <div class="row">
+			  	        <div class="col-lg-4">
+							User Active:
+				        </div> 
+			  	        <div class="col-lg-8">
+			  	        	{{ userdetails.active }}
+				        </div> 
+					  </div>
+	  		          <div class="row">
+			  	        <div class="col-lg-4">
+							User Language:
+				        </div> 
+			  	        <div class="col-lg-8">
+			  	        	{{ userdetails.language }}
+				        </div> 
+					  </div>
+	  		          <div class="row">
+			  	        <div class="col-lg-4">
+							User Locale:
+				        </div> 
+			  	        <div class="col-lg-8">
+			  	        	{{ userdetails.locale }}
+				        </div> 
+					  </div>
+	  		          <div class="row">
+			  	        <div class="col-lg-4">
+							UTC Offset:
+				        </div> 
+			  	        <div class="col-lg-8">
+			  	        	{{ userdetails.utcOffset }}
+				        </div> 
+					  </div>
+	  		          <div class="row">
+			  	        <div class="col-lg-4">
+							Last Modified Date:
+				        </div> 
+			  	        <div class="col-lg-8">
+			  	        	{{ userdetails.last_modified_date }}
+				        </div> 
+					  </div>
+				 </div>
+			  </div>
+		  </div>
+        </div>
+	</div>
+
+    <div id="footer" class="navbar navbar-inverse navbar-fixed-bottom">
+      <div class="container text-center">
+	      <h3>Timeline IQ</h3>
+      	  <p class="copyright">&copy; 2014 TimelineIQ Inc. All rights reserved. <a href="/legal/terms" data-track="Footer: TOS">Terms of Service</a> &amp; <a href="/legal/privacy" data-track="Privacy">Privacy Policy.</a></p>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
