@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Bootstrap, from Twitter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+	div {
+	    border: 1px solid #666;
+	    height: 50px;
+	    text-align: center;
+	}
+	
+	h7.left-aligned {
+	    height: inherit;
+        width: inherit;
+	    vertical-align: bottom;
+	    background-color: pink; /* optional to show extent of element */
+	    margin-left: 0;
+        text-align: left;
+	    display: table-cell;
+	}
+    h7.right-aligned {
+        height: inherit;
+        width: inherit;
+        vertical-align: bottom;
+        background-color: pink; /* optional to show extent of element */
+        margin-right: 0;
+        text-align: right;
+        display: table-cell;
+    }
+
+      .no-padding { padding: 0; }
+    </style>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+    <![endif]-->
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  </head>
+
+  <body>
+<br>
+
+    <div class="container">
+<div class="row no-padding">
+  <div class="col-md-4 no-padding" > </div>
+  <div class="col-md-4 no-padding" > .col-md-4 </div>
+  <div class="col-md-4 no-padding" > <h7 class="left-aligned"> Date <br> Right side - Left aligned </h7></div>
+</div>
+<div class="row no-padding">
+  <div class="col-md-4 no-padding" > <h7 class="right-aligned"> Date <br> Left side - Right aligned </h7></div>
+  <div class="col-md-4 no-padding" > .col-md-4 </div>
+  <div class="col-md-4 no-padding" > </div>
+</div>
+    </div> <!-- /container -->
+
+      <hr>
+
+      <footer>
+        <p>&copy; Company 2013</p>
+      </footer>
+  </body>
+</html>
